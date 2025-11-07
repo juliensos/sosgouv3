@@ -26,6 +26,8 @@ WebFont.load({
 </head>
 <body class="body">
 <div class="grid-layout">
+
+<!-- HEADER -->
 <div class="_3-cont-head">
 <div id="w-node-b9597464-fc2b-b33e-b4cb-35073abd0975-947ddeee" class="bloclogo">
 <a data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0976" href="#" class="w-inline-block">
@@ -37,11 +39,6 @@ WebFont.load({
 <div class="fontello-picot-compte"></div>
 <div class="si-connect">
 <div class="connected-username" style="display:none;">username</div>
-</div>
-</a>
-<a data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0980" style="display:none" href="#" class="w-inline-block">
-<div class="_3-menou-bouton-compte">
-<div class="fontello-picot-compte"></div>
 </div>
 </a>
 <div data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0984" style="display:none" class="_3-menu-mon-compte">
@@ -57,7 +54,10 @@ WebFont.load({
 </div>
 </div>
 
+<!-- BODY -->
 <div class="_3-cont-body">
+
+<!-- MODAL CONNEXION/INSCRIPTION -->
 <div class="petits-modaux">
 <div style="display:none" class="cont-flex">
 <div class="cont-flex-50-50">
@@ -67,47 +67,45 @@ WebFont.load({
 <div class="_3-small-modal-stroke">
 <div class="_3-petit-modal-content">
 <div class="_3-small-content-gap-10">
+
+<!-- Formulaire connexion -->
 <div class="_w-connect-bloc creation">
 <h1>Me connecter…</h1>
 <div class="_3-esp-v-10"></div>
 <div class="_3-form-bloc w-form">
-<form id="email-form-13" name="email-form-13" data-name="Email Form 13" method="get" class="_3-form-gap-10" data-wf-page-id="68f00317ba745372947ddeee" data-wf-element-id="b9597464-fc2b-b33e-b4cb-35073abd09e8">
-<input class="mon-input5 w-input" maxlength="256" name="username" data-name="Username" placeholder="nom d'utilisateur" type="text" id="login-username" required/>
-<input class="mon-input5 w-input" maxlength="256" name="password" data-name="Password" placeholder="mot de passe" type="password" id="login-password" required/>
-<button type="submit" class="_w-link-bloc-button publier w-inline-block">
+<form id="login-form" name="login-form" data-name="Login Form" method="get" class="_3-form-gap-10">
+<input class="mon-input5 w-input" maxlength="256" name="username" placeholder="nom d'utilisateur" type="text" id="login-username" required/>
+<input class="mon-input5 w-input" maxlength="256" name="password" placeholder="mot de passe" type="password" id="login-password" required/>
+<button type="submit" class="_w-link-bloc-button publier">
 <div>je me connecte</div>
 </button>
 </form>
-<div class="w-form-done">
-<div>Connexion réussie !</div>
-</div>
-<div class="w-form-fail">
-<div>Erreur de connexion.</div>
+<div class="w-form-done"><div>Connexion réussie !</div></div>
+<div class="w-form-fail"><div>Erreur de connexion.</div></div>
 </div>
 </div>
-</div>
+
 <div class="espace-stroke"></div>
+
+<!-- Formulaire inscription -->
 <div class="_w-connect-bloc creation">
 <h1>…ou créer un compte</h1>
 <div class="_3-esp-v-10"></div>
 <div class="_3-form-bloc w-form">
-<form id="email-form-13" name="email-form-13" data-name="Email Form 13" method="get" class="_3-form-gap-10" data-wf-page-id="68f00317ba745372947ddeee" data-wf-element-id="b9597464-fc2b-b33e-b4cb-35073abd09fa">
-<input class="mon-input5 w-input" maxlength="256" name="username" data-name="Username" placeholder="nom d'utilisateur" type="text" id="signup-username" required/>
-<input class="mon-input5 w-input" maxlength="256" name="password" data-name="Password" placeholder="mot de passe" type="password" id="signup-password" required/>
-<input class="mon-input5 w-input" maxlength="256" name="password-confirm" data-name="Password Confirm" placeholder="confirmer mot de passe" type="password" id="signup-password-confirm" required/>
+<form id="signup-form" name="signup-form" data-name="Signup Form" method="get" class="_3-form-gap-10">
+<input class="mon-input5 w-input" maxlength="256" name="username" placeholder="nom d'utilisateur" type="text" id="signup-username" required/>
+<input class="mon-input5 w-input" maxlength="256" name="password" placeholder="mot de passe" type="password" id="signup-password" required/>
+<input class="mon-input5 w-input" maxlength="256" name="password-confirm" placeholder="confirmer mot de passe" type="password" id="signup-password-confirm" required/>
 <div class="_w-courant">* Sans email, pas de possibilité de notifications ni de récupération de mot de passe.</div>
-<button type="submit" class="_w-link-bloc-button publier w-inline-block">
+<button type="submit" class="_w-link-bloc-button publier">
 <div>créer mon compte</div>
 </button>
 </form>
-<div class="w-form-done">
-<div>Compte créé avec succès !</div>
-</div>
-<div class="w-form-fail">
-<div>Erreur lors de la création du compte.</div>
+<div class="w-form-done"><div>Compte créé avec succès !</div></div>
+<div class="w-form-fail"><div>Erreur lors de la création du compte.</div></div>
 </div>
 </div>
-</div>
+
 </div>
 </div>
 </div>
@@ -116,7 +114,8 @@ WebFont.load({
 </div>
 </div>
 
-<div style="display:none" class="_4-page-modal">
+<!-- MODAL INFORMATIONS PERSONNELLES -->
+<div style="display:none" class="_4-page-modal info-perso-modal">
 <a data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0c45" href="#" class="_3-close-bouton w-inline-block">
 <div class="croix"></div>
 </a>
@@ -129,18 +128,18 @@ WebFont.load({
 </a>
 <div class="div-activit">
 <div class="w-form">
-<form id="email-form-16" name="email-form-16" data-name="Email Form 16" method="get" data-wf-page-id="68f00317ba745372947ddeee" data-wf-element-id="b9597464-fc2b-b33e-b4cb-35073abd0c52">
+<form id="email-form-16" name="email-form-16" data-name="Email Form 16" method="get">
 <div class="div-block-328">
-<input class="mon-input2 w-input" maxlength="256" name="name-6" data-name="Name 6" placeholder="nom d'utilisateur*" type="text" id="name-6" required=""/>
-<input class="mon-input2 w-input" maxlength="256" name="name-6" data-name="Name 6" placeholder="mot de passe*" type="text" id="name-6" required=""/>
+<input class="mon-input2 w-input" maxlength="256" name="name-6" placeholder="nom d'utilisateur*" type="text" id="name-6" required=""/>
+<input class="mon-input2 w-input" maxlength="256" name="name-6" placeholder="mot de passe*" type="text" id="name-6" required=""/>
 <label class="w-checkbox _w-checkbox">
 <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox w--redirected-checked"></div>
 <input type="checkbox" id="checkbox" name="checkbox" data-name="Checkbox" style="opacity:0;position:absolute;z-index:-1" checked=""/>
 <span class="checkbox-label-2 w-form-label" for="checkbox">Afficher mon nom d'utilisateur sur le site plutôt que mon Prénom + Nom</span>
 </label>
-<input class="mon-input2 w-input" maxlength="256" name="name-6" data-name="Name 6" placeholder="nom" type="text" id="name-6"/>
-<input class="mon-input2 w-input" maxlength="256" name="name-6" data-name="Name 6" placeholder="prénom" type="text" id="name-6"/>
-<input class="mon-input2 w-input" maxlength="256" name="name-6" data-name="Name 6" placeholder="email" type="text" id="name-6"/>
+<input class="mon-input2 w-input" maxlength="256" name="name-6" placeholder="nom" type="text" id="name-6"/>
+<input class="mon-input2 w-input" maxlength="256" name="name-6" placeholder="prénom" type="text" id="name-6"/>
+<input class="mon-input2 w-input" maxlength="256" name="name-6" placeholder="email" type="text" id="name-6"/>
 </div>
 <div class="bloc-bouton">
 <div class="_2-bt">
@@ -156,14 +155,12 @@ WebFont.load({
 </div>
 </form>
 <div class="success-message-2 w-form-done">
-<div>Les informations on été mises à jour.</div>
+<div>Les informations ont été mises à jour.</div>
 <a href="#" class="w-inline-block">
 <div data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0c6f" class="_2-code-link-button-big">fermer</div>
 </a>
 </div>
-<div class="w-form-fail">
-<div>Oops! Something went wrong while submitting the form.</div>
-</div>
+<div class="w-form-fail"><div>Oops! Something went wrong while submitting the form.</div></div>
 </div>
 </div>
 </div>
@@ -172,6 +169,71 @@ WebFont.load({
 <div data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0c74" class="_3-fond-modal-pages"></div>
 </div>
 
+<!-- MODAL ADMIN AJOUTER PERSONNALITÉ -->
+<div data-w-id="577ba5b4-1e99-3de5-9565-2497057080bf" style="display:none" class="_4-page-modal admin-perso-modal">
+<a data-w-id="577ba5b4-1e99-3de5-9565-2497057080c0" href="#" class="_3-close-bouton big w-inline-block">
+<div class="croix"></div>
+</a>
+<div class="_3-big-modal-stroke">
+<div class="_3-content-fiche-perso">
+
+<!-- Recherche personnalité -->
+<div class="form-block-14 w-form">
+<form id="search-perso-form" name="search-perso-form" data-name="Search Perso Form" method="get">
+<div class="_3-bloc-min-r">
+<div class="_3-gov-line-1">
+<input class="mon-input3 w-input" maxlength="256" name="search-perso" placeholder="rechercher une personnalité" type="text" id="search-perso-input" autocomplete="off"/>
+<div class="_3-gov-mini-buttons">
+<a data-w-id="577ba5b4-1e99-3de5-9565-2497057080cb" href="#" class="_2-mini-bouton loupe w-inline-block">
+<div class="_2-picto-fontello-bouton"></div>
+</a>
+</div>
+</div>
+<!-- Dropdown résultats de recherche -->
+<div id="search-results-dropdown" class="search-dropdown" style="display:none;"></div>
+</div>
+</form>
+</div>
+
+<!-- Formulaire ajout personnalité (admin) -->
+<div class="w-form">
+<form id="admin-add-perso-form" name="admin-add-perso-form" data-name="Admin Add Perso Form" method="get" class="form-17">
+<input class="mon-input2 w-input" maxlength="256" name="nom" placeholder="nom" type="text" id="admin-nom" required/>
+<input class="mon-input2 w-input" maxlength="256" name="prenom" placeholder="prénom" type="text" id="admin-prenom" required/>
+<input class="mon-input2 w-input" name="metiers" placeholder="métier 1, métier 2, etc…" type="text" id="admin-metiers"/>
+<textarea class="mon-input2 w-input" name="bio" placeholder="short bio" id="admin-bio" rows="3"></textarea>
+<textarea class="mon-input2 w-input" name="expertise" placeholder="Domaines de recherche et expertise" id="admin-expertise" rows="3"></textarea>
+<textarea class="mon-input2 w-input" name="engagement" placeholder="Engagements et positionnements politiques" id="admin-engagement" rows="3"></textarea>
+
+<!-- Liste des vidéos ajoutées -->
+<div id="videos-list" style="margin: 10px 0;"></div>
+<!-- Liste des articles ajoutés -->
+<div id="articles-list" style="margin: 10px 0;"></div>
+
+<div class="bouton-media">
+<a href="#" id="add-video-btn" class="_w-link-bloc-button small w-button">ajouter lien video</a>
+<a href="#" id="add-article-btn" class="_w-link-bloc-button small w-button">ajouter lien article</a>
+</div>
+
+<div class="pubis-utons">
+<div class="flex-v">
+<button type="submit" class="_w-link-bloc-button publier">
+<div class="_2-picto-fontello-bouton"></div>
+<h6><strong class="heading-bold-text">valider</strong></h6>
+</button>
+</div>
+</div>
+</form>
+<div class="w-form-done"><div>Personnalité ajoutée avec succès !</div></div>
+<div class="w-form-fail"><div>Erreur lors de l'ajout.</div></div>
+</div>
+
+</div>
+</div>
+<div data-w-id="74c58c9f-a3ac-f587-492e-d6624dd5467b" class="_3-fond-modal-pages admin-modal-bg"></div>
+</div>
+
+<!-- MENU PRINCIPAL -->
 <div class="_3-cont-page-menu">
 <div class="_3-menu">
 <a data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0efa" href="#" class="_2-menu-bouton w-inline-block">
@@ -187,102 +249,107 @@ WebFont.load({
 <h1>liste des personnalités</h1>
 </a>
 </div>
+
+<!-- CONTENU A PROPOS -->
 <div style="display:block" class="_3-0_sous-menu-content-0">
 <div class="content-a-propos">
-<div class="_3-tile-bloc-padd-10-left">
-<h1>A propos</h1>
-</div>
-<div class="_3-tile-bloc-padd-10-left">
-<h2>L'idée</h2>
-</div>
+<div class="_3-tile-bloc-padd-10-left"><h1>A propos</h1></div>
+<div class="_3-tile-bloc-padd-10-left"><h2>L'idée</h2></div>
 <p>SosGouv vous propose d'imaginer votre gouvernement idéal, composé des personnalités issues de sa base de données. <br/><br/>Des personnalités qui, par leur prise de parole publique, leur expertise sur des domaines spécifiques et/ou leur engagement politique, vous inspirent et vous donnent l'envie de les voir accéder à des postes clefs du gouvernement.<br/>‍<br/>Il s'agit ici d'une expérience de pensée… d'une blague entre amis qui se prend au sérieux :0</p>
-<div class="_3-tile-bloc-padd-10-left">
-<h2>Fonctionalités</h2>
-</div>
+<div class="_3-tile-bloc-padd-10-left"><h2>Fonctionalités</h2></div>
 <p>SosGouv permet aux utilisateurs qui se créent un compte:<br/>‍<br/>• d'enregistrer dans la base de données des personnalités et de les associer à des fonctions ministérielles• de composer des gouvernements en utilisant cette base de données, et de customiser ces gouvernements pour les faire correspondre à une vision.<br/>‍<br/>• de visualiser les propositions gouvernementales des autres utilisateurs, de les apprécier et de les commenter.• de visualiser le listes des personnalités que les autres utilisateurs on ajoutés à la base<br/>‍<br/>• d'enregistrer dans votre espace personnel les informations liées à votre activité (like, commentaires, brouillons)<br/>‍<br/>• d'échanger avec les autres utilisateurs via une messagerie personnalisée</p>
-<div class="_3-tile-bloc-padd-10-left">
-<h2>la vision</h2>
-</div>
+<div class="_3-tile-bloc-padd-10-left"><h2>la vision</h2></div>
 <p>Imaginer un média, un espace de publication d'articles, de documents audio et vidéos, d'interview, qui permettrait de mettre en perspective, de donner corps à cette idée de base, qui pour le moment, est gérée par des amateurs et sans aucune structure juridique </p>
 </div>
 </div>
+
+<!-- CONTENU GOUVERNEMENTS PUBLIÉS -->
 <div style="display:none" class="_3-1_sous-menu-content-1">
-<h1>gouvernement publiés</h1>
+<h1>gouvernements publiés</h1>
 </div>
+
+<!-- CONTENU COMPOSER GOUVERNEMENT -->
 <div style="display:none" class="_3-2_sous-menu-content-2">
 <h1>composer gouvernement</h1>
 </div>
+
+<!-- CONTENU AJOUTER PERSONNALITÉ (UTILISATEUR) -->
 <div style="display:none" class="_3-3_sous-menu-content-3">
-<h1>ajouter personnalité</h1>
+<div class="_3-content-fiche-perso">
+<h1>Ajouter une personnalité</h1>
+<div class="w-form">
+<form id="user-add-perso-form" name="user-add-perso-form" method="get">
+<input class="mon-input2 w-input" maxlength="256" name="nom" placeholder="nom" type="text" id="user-nom" required/>
+<input class="mon-input2 w-input" maxlength="256" name="prenom" placeholder="prénom" type="text" id="user-prenom" required/>
+<div class="pubis-utons">
+<div class="flex-v">
+<button type="submit" class="_w-link-bloc-button publier">
+<div class="_2-picto-fontello-bouton"></div>
+<h6><strong class="heading-bold-text">valider</strong></h6>
+</button>
 </div>
-<div style="display:none" class="_3-4_sous-menu-content-4">
-<h1>liste personnalites</h1>
+</div>
+</form>
+<div class="w-form-done"><div>Personnalité ajoutée avec succès !</div></div>
+<div class="w-form-fail"><div>Erreur lors de l'ajout.</div></div>
+</div>
 </div>
 </div>
 
+<!-- CONTENU LISTE PERSONNALITÉS -->
+<div style="display:none" class="_3-4_sous-menu-content-4">
+<h1>liste personnalités</h1>
+<div id="personnalites-list"></div>
+</div>
+
+</div>
+</div>
+
+<!-- FOOTER -->
 <div class="_3-cont-foot">
 <div class="admine-part" style="display:none;">
-<a href="#" class="link-admin">link1</a>
-<a data-w-id="b9597464-fc2b-b33e-b4cb-35073abd1141" href="#" class="link-admin">admin link base</a>
-<a data-w-id="b9597464-fc2b-b33e-b4cb-35073abd1143" href="#" class="link-admin">admin enhance</a>
+<a data-w-id="04ef9136-aa3c-8a32-1874-52c7613bd891" href="#" class="link-admin">page admin + personalité</a>
 </div>
 <div class="code-embed-10 w-embed">
 <style>
-.mon-input::placeholder {
+.mon-input::placeholder, .mon-input2::placeholder, .mon-input3::placeholder, .mon-input5::placeholder, .mon-inputdrop::placeholder {
   color: inherit;
   opacity: 1;
 }
-.mon-input::-webkit-input-placeholder { color: inherit; opacity: 1; }
-.mon-input:-ms-input-placeholder { color: inherit; opacity: 1; }
-.mon-input::-ms-input-placeholder { color: inherit; opacity: 1; }
+.mon-input::-webkit-input-placeholder, .mon-input2::-webkit-input-placeholder, .mon-input3::-webkit-input-placeholder, .mon-input5::-webkit-input-placeholder, .mon-inputdrop::-webkit-input-placeholder { 
+  color: inherit; 
+  opacity: 1; 
+}
 
-.mon-input2::placeholder {
-  color: inherit;
-  opacity: 1;
+/* Style pour le dropdown de recherche */
+.search-dropdown {
+  position: absolute;
+  background: white;
+  border: 1px solid #ddd;
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
-.mon-input2::-webkit-input-placeholder { color: inherit; opacity: 1; }
-.mon-input2:-ms-input-placeholder { color: inherit; opacity: 1; }
-.mon-input2::-ms-input-placeholder { color: inherit; opacity: 1; }
-
-.mon-input3::placeholder {
-  color: inherit;
-  opacity: 1;
+.search-result-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
 }
-.mon-input3::-webkit-input-placeholder { color: inherit; opacity: 1; }
-.mon-input3:-ms-input-placeholder { color: inherit; opacity: 1; }
-.mon-input3::-ms-input-placeholder { color: inherit; opacity: 1; }
-
-.mon-input5::placeholder {
-  color: inherit;
-  opacity: 1;
+.search-result-item:hover {
+  background-color: #f5f5f5;
 }
-.mon-input4::-webkit-input-placeholder { color: inherit; opacity: 1; }
-.mon-input4:-ms-input-placeholder { color: inherit; opacity: 1; }
-.mon-input4::-ms-input-placeholder { color: inherit; opacity: 1; }
-
-.mon-input5::placeholder {
-  color: inherit;
-  opacity: 1;
-}
-.mon-input4::-webkit-input-placeholder { color: inherit; opacity: 1; }
-.mon-input4:-ms-input-placeholder { color: inherit; opacity: 1; }
-.mon-input4::-ms-input-placeholder { color: inherit; opacity: 1; }
-
-.mon-inputdrop::placeholder {
-  color: inherit;
-  opacity: 1;
-}
-.mon-inputdrop::-webkit-input-placeholder { color: inherit; opacity: 1; }
-.mon-inputdrop:-ms-input-placeholder { color: inherit; opacity: 1; }
-.mon-inputdrop::-ms-input-placeholder { color: inherit; opacity: 1; }
 </style>
 </div>
 </div>
+
 </div>
 
 <!-- Scripts -->
 <script src="ui.js"></script>
 <script src="auth.js"></script>
+<script src="personnalites.js"></script>
 
 <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=68ecfda4d9b3270b98426ff5" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 </body>
