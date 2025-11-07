@@ -172,9 +172,8 @@ document.addEventListener('DOMContentLoaded', function() {
         loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const inputs = this.querySelectorAll('input[type="text"]');
-            const username = inputs[0].value;
-            const password = inputs[1].value;
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
 
             const result = await login(username, password);
             
@@ -200,10 +199,9 @@ document.addEventListener('DOMContentLoaded', function() {
         signupForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const inputs = this.querySelectorAll('input[type="text"]');
-            const username = inputs[0].value;
-            const password = inputs[1].value;
-            const passwordConfirm = inputs[2].value;
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            const passwordConfirm = document.getElementById('signup-password-confirm').value;
 
             if (password !== passwordConfirm) {
                 alert('Les mots de passe ne correspondent pas');
