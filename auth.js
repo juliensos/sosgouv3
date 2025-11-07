@@ -120,7 +120,17 @@ function updateUIForLoggedInUser(user) {
     // Afficher la partie admin si l'utilisateur est admin
     const adminPart = document.querySelector('.admine-part');
     if (adminPart) {
-        adminPart.style.display = user.isAdmin ? 'flex' : 'none';
+        if (user.isAdmin) {
+            adminPart.style.display = 'flex';
+        } else {
+            adminPart.style.display = 'none';
+        }
+    }
+
+    // Pré-remplir les informations personnelles
+    const usernameInput = document.querySelector('input[placeholder="nom d\'utilisateur*"]');
+    if (usernameInput) {
+        usernameInput.value = user.username;
     }
 
     // Modifier le menu pour afficher "me déconnecter" au lieu de "me connecter"
