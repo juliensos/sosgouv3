@@ -14,12 +14,18 @@
   background-color: #ffbb47 !important;
   min-height: 40px !important;
   display: flex !important;
+  position: relative !important;
+  z-index: 1000 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .admine-part .link-admin {
   color: #000 !important;
   padding: 5px 10px;
   text-decoration: underline;
+  font-size: 14px !important;
+  display: inline-block !important;
 }
 
 /* Style pour les boutons de menu actifs (fond rose) */
