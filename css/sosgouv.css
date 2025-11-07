@@ -5497,6 +5497,17 @@ blockquote {
   padding: 0 5px;
 }
 
+._w-link-bloc-button.small {
+  background-color: var(--black-100);
+  color: var(--light-grey);
+  flex: none;
+  width: auto;
+  min-width: auto;
+  max-height: 20px;
+  padding: 2px 5px;
+  display: block;
+}
+
 ._2-drops-down-new {
   z-index: auto;
   margin-left: 0;
@@ -9200,7 +9211,7 @@ blockquote {
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
-  display: none;
+  display: block;
   overflow: auto;
 }
 
@@ -10596,7 +10607,8 @@ blockquote {
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   background-color: var(--sos-yellow);
-  flex-flow: wrap;
+  flex-flow: row;
+  align-items: flex-start;
   width: 100%;
   height: 100%;
   max-height: 40px;
@@ -10606,11 +10618,12 @@ blockquote {
 }
 
 ._3-cont-foot {
+  align-items: flex-start;
   height: 40px;
   max-height: 40px;
   padding-left: 20px;
   padding-right: 20px;
-  display: flex;
+  display: block;
 }
 
 .div-block-327 {
@@ -10649,6 +10662,26 @@ blockquote {
 
 .success-message-2 {
   background-color: var(--new-grey-25);
+}
+
+.collection-list-wrapper-3 {
+  display: none;
+}
+
+.bouton-media {
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  justify-content: flex-start;
+  align-self: flex-start;
+  margin-bottom: 20px;
+  display: flex;
+}
+
+.form-17 {
+  grid-column-gap: 7px;
+  grid-row-gap: 7px;
+  flex-flow: column;
+  display: flex;
 }
 
 @media screen and (max-width: 991px) {
