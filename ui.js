@@ -109,11 +109,31 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('._3-4_sous-menu-content-4')  // Liste personnalités (index 4)
     ];
     
+    // Tous les boutons de menu
+    const menuButtons = [
+        null, // Pas de bouton pour "A propos" (c'est le logo)
+        document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0efa"]'), // Gouvernements
+        document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0efd"]'), // Composer
+        document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0f00"]'), // Ajouter
+        document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0f03"]')  // Liste
+    ];
+    
     // Fonction pour afficher une section et masquer les autres
     function showSection(index) {
         contentSections.forEach((section, i) => {
             if (section) {
                 section.style.display = (i === index) ? 'block' : 'none';
+            }
+        });
+        
+        // Gérer le style actif des boutons
+        menuButtons.forEach((button, i) => {
+            if (button) {
+                if (i === index) {
+                    button.classList.add('w--current');
+                } else {
+                    button.classList.remove('w--current');
+                }
             }
         });
     }
