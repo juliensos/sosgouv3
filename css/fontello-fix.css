@@ -1,4 +1,4 @@
-/* Correction du chargement des fonts Fontello */
+/* Chargement des fonts Fontello */
 @font-face {
   font-family: Fontello;
   src: url("../fonts/fontello.woff2") format("woff2"), 
@@ -9,38 +9,9 @@
   font-display: swap;
 }
 
-/* Forcer l'affichage de la zone admin */
-.admine-part {
-  background-color: #ffbb47 !important;
-  min-height: 40px !important;
-  display: flex !important;
-  position: relative !important;
-  z-index: 1000 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.admine-part .link-admin {
-  color: #000 !important;
-  padding: 5px 10px;
-  text-decoration: underline;
-  font-size: 14px !important;
-  display: inline-block !important;
-}
-
-/* Style pour les boutons de menu actifs (fond rose) */
-._2-menu-bouton.w--current {
-  background-color: #ffbbad !important; /* Rose correct */
-  border-color: #ffbbad !important;
-}
-
-._2-menu-bouton.w--current h1 {
-  color: #fff !important;
-}
-
-/* Icônes avec pseudo-éléments */
+/* Icônes Fontello */
 .fontello-picot-compte::before {
-  content: "\e818"; /* Code pour l'icône "user" */
+  content: "\e818"; /* Icône user */
   font-family: Fontello, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
@@ -57,7 +28,7 @@
 }
 
 .croix::before {
-  content: "\e805"; /* Code pour l'icône "cancel" */
+  content: "\e805"; /* Icône cancel */
   font-family: Fontello, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
@@ -73,3 +44,64 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Zone admin */
+.admine-part {
+  background-color: #ffbb47;
+  min-height: 40px;
+}
+
+.admine-part .link-admin {
+  color: #000;
+  padding: 5px 10px;
+  text-decoration: underline;
+}
+
+/* Style pour les boutons de menu actifs */
+._2-menu-bouton.w--current {
+  background-color: #ffbbad;
+  border-color: #ffbbad;
+}
+
+._2-menu-bouton.w--current h1 {
+  color: #fff;
+}
+
+/* Style pour le dropdown de recherche */
+.search-dropdown {
+  position: absolute;
+  background: white;
+  border: 1px solid #ddd;
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin-top: 5px;
+  border-radius: 4px;
+}
+
+.search-result-item {
+  padding: 12px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.search-result-item:hover {
+  background-color: #f5f5f5;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.search-result-item small {
+  color: #666;
+  font-size: 12px;
+}
