@@ -1,9 +1,9 @@
-// Gestion des personnalités
+// Gestion des personnalités avec statut, tri et filtres
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Arrays temporaires pour les liens
     let tempVideos = [];
     let tempArticles = [];
+    let allPersonnalites = []; // Cache des données
     
     // ========== MODAL ADMIN - OUVRIR ==========
     const adminLink = document.querySelector('[data-w-id="04ef9136-aa3c-8a32-1874-52c7613bd891"]');
@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Fermer en cliquant sur le fond
     if (adminModalBg) {
         adminModalBg.addEventListener('click', function() {
             if (adminModal) adminModal.style.display = 'none';
@@ -43,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // ========== AJOUT DE LIENS VIDEO/ARTICLE ==========
+    // ========== AJOUT LIENS VIDEO/ARTICLE ==========
     const addVideoBtn = document.getElementById('add-video-btn');
     const addArticleBtn = document.getElementById('add-article-btn');
     const videosList = document.getElementById('videos-list');
@@ -73,25 +72,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function updateVideosList() {
         if (!videosList) return;
-        videosList.innerHTML = tempVideos.map((url, index) => `
+        videosList.innerHTML = tempVideos.length > 0 ? '<strong>Vidéos:</strong>' : '';
+        videosList.innerHTML += tempVideos.map((url, index) => `
             <div style="display:flex; align-items:center; margin:5px 0; padding:8px; background:#f5f5f5; border-radius:4px;">
                 <span style="flex:1; font-size:13px; overflow:hidden; text-overflow:ellipsis;">${url}</span>
-                <button onclick="removeVideo(${index})" style="margin-left:10px; padding:4px 8px; background:#ff4444; color:white; border:none; border-radius:3px; cursor:pointer;">✕</button>
+                <button onclick="removeVideo(${index})" type="button" style="margin-left:10px; padding:4px 8px; background:#ff4444; color:white; border:none; border-radius:3px; cursor:pointer;">✕</button>
             </div>
         `).join('');
     }
     
     function updateArticlesList() {
         if (!articlesList) return;
-        articlesList.innerHTML = tempArticles.map((url, index) => `
+        articlesList.innerHTML = tempArticles.length > 0 ? '<strong>Articles:</strong>' : '';
+        articlesList.innerHTML += tempArticles.map((url, index) => `
             <div style="display:flex; align-items:center; margin:5px 0; padding:8px; background:#f5f5f5; border-radius:4px;">
                 <span style="flex:1; font-size:13px; overflow:hidden; text-overflow:ellipsis;">${url}</span>
-                <button onclick="removeArticle(${index})" style="margin-left:10px; padding:4px 8px; background:#ff4444; color:white; border:none; border-radius:3px; cursor:pointer;">✕</button>
+                <button onclick="removeArticle(${index})" type="button" style="margin-left:10px; padding:4px 8px; background:#ff4444; color:white; border:none; border-radius:3px; cursor:pointer;">✕</button>
             </div>
         `).join('');
     }
     
-    // Fonctions globales pour supprimer
     window.removeVideo = function(index) {
         tempVideos.splice(index, 1);
         updateVideosList();
@@ -120,8 +120,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const bio = document.getElementById('admin-bio').value.trim();
             const expertise = document.getElementById('admin-expertise').value.trim();
             const engagement = document.getElementById('admin-engagement').value.trim();
+            const statut = parseInt(document.getElementById('admin-statut').value);
             
-            // Convertir les métiers en array
             const metiers = metiersInput ? metiersInput.split(',').map(m => m.trim()).filter(m => m) : [];
             
             try {
@@ -136,14 +136,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         engagement_politique: engagement,
                         liens_videos: tempVideos,
                         liens_articles: tempArticles,
+                        statut: statut,
                         created_by: user.id,
                         is_admin_created: true
                     }])
                     .select();
                 
                 if (error) {
-                    console.error('Erreur Supabase:', error);
-                    alert('Erreur lors de l\'ajout : ' + error.message);
+                    alert('Erreur : ' + error.message);
                     return;
                 }
                 
@@ -152,9 +152,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (adminModal) adminModal.style.display = 'none';
                 if (adminModalBg) adminModalBg.style.display = 'none';
                 
+                // Recharger la liste si elle est affichée
+                if (document.querySelector('._3-4_sous-menu-content-4').style.display !== 'none') {
+                    loadPersonnalitesList();
+                }
             } catch (err) {
-                console.error('Erreur:', err);
-                alert('Erreur lors de l\'ajout de la personnalité');
+                alert('Erreur lors de l\'ajout');
             }
         });
     }
@@ -167,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateArticlesList();
     }
     
-    // ========== RECHERCHE PERSONNALITÉ (AUTOCOMPLETE) ==========
+    // ========== RECHERCHE PERSONNALITÉ ==========
     const searchInput = document.getElementById('search-perso-input');
     const searchDropdown = document.getElementById('search-results-dropdown');
     let searchTimeout;
@@ -190,25 +193,21 @@ document.addEventListener('DOMContentLoaded', function() {
                         .or(`nom.ilike.%${query}%,prenom.ilike.%${query}%`)
                         .limit(10);
                     
-                    if (error) {
-                        console.error('Erreur recherche:', error);
-                        return;
-                    }
+                    if (error) return;
                     
                     if (data && data.length > 0) {
                         searchDropdown.innerHTML = data.map(perso => `
                             <div class="search-result-item" data-perso-id="${perso.id}">
                                 <strong>${perso.prenom} ${perso.nom}</strong>
                                 ${perso.metiers && perso.metiers.length > 0 ? '<br><small>' + perso.metiers.join(', ') + '</small>' : ''}
+                                ${perso.statut ? '<br><small>Statut: ' + getStatutLabel(perso.statut) + '</small>' : ''}
                             </div>
                         `).join('');
                         searchDropdown.style.display = 'block';
                         
-                        // Clic sur un résultat
                         document.querySelectorAll('.search-result-item').forEach(item => {
                             item.addEventListener('click', function() {
-                                const persoId = this.dataset.persoId;
-                                loadPersonnalite(persoId);
+                                loadPersonnalite(this.dataset.persoId);
                                 searchDropdown.style.display = 'none';
                                 searchInput.value = '';
                             });
@@ -218,12 +217,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         searchDropdown.style.display = 'block';
                     }
                 } catch (err) {
-                    console.error('Erreur recherche:', err);
+                    console.error(err);
                 }
             }, 300);
         });
         
-        // Fermer le dropdown si on clique ailleurs
         document.addEventListener('click', function(e) {
             if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
                 searchDropdown.style.display = 'none';
@@ -239,30 +237,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 .eq('id', id)
                 .single();
             
-            if (error) {
-                console.error('Erreur chargement:', error);
-                return;
-            }
+            if (error) return;
             
-            // Remplir le formulaire avec les données
             document.getElementById('admin-nom').value = data.nom || '';
             document.getElementById('admin-prenom').value = data.prenom || '';
             document.getElementById('admin-metiers').value = data.metiers ? data.metiers.join(', ') : '';
             document.getElementById('admin-bio').value = data.bio_courte || '';
             document.getElementById('admin-expertise').value = data.expertise || '';
             document.getElementById('admin-engagement').value = data.engagement_politique || '';
+            document.getElementById('admin-statut').value = data.statut || 0;
             
             tempVideos = data.liens_videos || [];
             tempArticles = data.liens_articles || [];
             updateVideosList();
             updateArticlesList();
-            
         } catch (err) {
-            console.error('Erreur:', err);
+            console.error(err);
         }
     }
     
-    // ========== FORMULAIRE UTILISATEUR - AJOUTER PERSONNALITÉ (NOM + PRÉNOM) ==========
+    // ========== FORMULAIRE UTILISATEUR ==========
     const userForm = document.getElementById('user-add-perso-form');
     if (userForm) {
         userForm.addEventListener('submit', async function(e) {
@@ -270,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const user = getUserSession();
             if (!user) {
-                alert('Vous devez être connecté pour ajouter une personnalité');
+                alert('Vous devez être connecté');
                 return;
             }
             
@@ -284,27 +278,30 @@ document.addEventListener('DOMContentLoaded', function() {
                         nom: nom,
                         prenom: prenom,
                         created_by: user.id,
-                        is_admin_created: false
+                        is_admin_created: false,
+                        statut: 0
                     }])
                     .select();
                 
                 if (error) {
-                    console.error('Erreur Supabase:', error);
-                    alert('Erreur lors de l\'ajout : ' + error.message);
+                    alert('Erreur : ' + error.message);
                     return;
                 }
                 
                 alert('Personnalité ajoutée avec succès !');
                 userForm.reset();
-                
             } catch (err) {
-                console.error('Erreur:', err);
-                alert('Erreur lors de l\'ajout de la personnalité');
+                alert('Erreur lors de l\'ajout');
             }
         });
     }
     
-    // ========== AFFICHER LISTE DES PERSONNALITÉS ==========
+    // ========== LISTE DES PERSONNALITÉS AVEC TRI ET FILTRES ==========
+    function getStatutLabel(statut) {
+        const labels = {0: 'néant', 1: 'jamais', 2: 'sous condition', 3: 'ok'};
+        return `${statut} - ${labels[statut] || 'inconnu'}`;
+    }
+    
     async function loadPersonnalitesList() {
         const listContainer = document.getElementById('personnalites-list');
         if (!listContainer) return;
@@ -316,27 +313,97 @@ document.addEventListener('DOMContentLoaded', function() {
                 .order('nom', { ascending: true });
             
             if (error) {
-                console.error('Erreur chargement liste:', error);
+                console.error(error);
                 return;
             }
             
-            if (data && data.length > 0) {
-                listContainer.innerHTML = data.map(perso => `
-                    <div style="padding:15px; margin:10px 0; border:1px solid #ddd; border-radius:5px;">
-                        <h3>${perso.prenom} ${perso.nom}</h3>
-                        ${perso.metiers && perso.metiers.length > 0 ? '<p><strong>Métiers:</strong> ' + perso.metiers.join(', ') + '</p>' : ''}
-                        ${perso.bio_courte ? '<p>' + perso.bio_courte + '</p>' : ''}
-                    </div>
-                `).join('');
-            } else {
-                listContainer.innerHTML = '<p>Aucune personnalité dans la base de données.</p>';
-            }
+            allPersonnalites = data || [];
+            renderPersonnalitesList();
         } catch (err) {
-            console.error('Erreur:', err);
+            console.error(err);
         }
     }
     
-    // Charger la liste quand on affiche la page
+    function renderPersonnalitesList() {
+        const listContainer = document.getElementById('personnalites-list');
+        if (!listContainer) return;
+        
+        const sortBy = document.getElementById('sort-select').value;
+        const filterStatut = document.getElementById('filter-statut').value;
+        
+        // Filtrer
+        let filtered = allPersonnalites;
+        if (filterStatut !== 'all') {
+            filtered = filtered.filter(p => p.statut === parseInt(filterStatut));
+        }
+        
+        // Trier
+        if (sortBy === 'alpha') {
+            filtered.sort((a, b) => a.nom.localeCompare(b.nom));
+            
+            // Grouper par lettre
+            const grouped = {};
+            filtered.forEach(perso => {
+                const letter = perso.nom[0].toUpperCase();
+                if (!grouped[letter]) grouped[letter] = [];
+                grouped[letter].push(perso);
+            });
+            
+            listContainer.innerHTML = Object.keys(grouped).sort().map(letter => `
+                <div style="margin:30px 0;">
+                    <h2 style="background:#ffbbad; padding:10px; border-radius:5px;">${letter}</h2>
+                    ${grouped[letter].map(perso => renderPersonnaliteCard(perso)).join('')}
+                </div>
+            `).join('');
+            
+        } else if (sortBy === 'metier') {
+            // Grouper par métier
+            const grouped = {};
+            filtered.forEach(perso => {
+                if (perso.metiers && perso.metiers.length > 0) {
+                    perso.metiers.forEach(metier => {
+                        if (!grouped[metier]) grouped[metier] = [];
+                        grouped[metier].push(perso);
+                    });
+                } else {
+                    if (!grouped['Sans métier']) grouped['Sans métier'] = [];
+                    grouped['Sans métier'].push(perso);
+                }
+            });
+            
+            listContainer.innerHTML = Object.keys(grouped).sort().map(metier => `
+                <div style="margin:30px 0;">
+                    <h2 style="background:#ffbbad; padding:10px; border-radius:5px;">${metier}</h2>
+                    ${grouped[metier].map(perso => renderPersonnaliteCard(perso)).join('')}
+                </div>
+            `).join('');
+        }
+    }
+    
+    function renderPersonnaliteCard(perso) {
+        return `
+            <div style="padding:15px; margin:10px 0; border:1px solid #ddd; border-radius:5px; background:#fff;">
+                <h3 style="margin:0 0 5px 0;">${perso.prenom} ${perso.nom} <span style="font-size:14px; color:#666;">[${getStatutLabel(perso.statut)}]</span></h3>
+                ${perso.metiers && perso.metiers.length > 0 ? '<p style="margin:5px 0;"><strong>Métiers:</strong> ' + perso.metiers.join(', ') + '</p>' : ''}
+                ${perso.bio_courte ? '<p style="margin:5px 0;">' + perso.bio_courte + '</p>' : ''}
+                ${perso.expertise ? '<p style="margin:5px 0;"><strong>Expertise:</strong> ' + perso.expertise.substring(0, 150) + (perso.expertise.length > 150 ? '...' : '') + '</p>' : ''}
+            </div>
+        `;
+    }
+    
+    // Événements pour les filtres
+    const sortSelect = document.getElementById('sort-select');
+    const filterSelect = document.getElementById('filter-statut');
+    
+    if (sortSelect) {
+        sortSelect.addEventListener('change', renderPersonnalitesList);
+    }
+    
+    if (filterSelect) {
+        filterSelect.addEventListener('change', renderPersonnalitesList);
+    }
+    
+    // Charger la liste quand on clique sur le bouton
     const listeBouton = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0f03"]');
     if (listeBouton) {
         listeBouton.addEventListener('click', function() {
