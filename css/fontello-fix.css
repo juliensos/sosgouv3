@@ -30,8 +30,8 @@
 
 /* Style pour les boutons de menu actifs (fond rose) */
 ._2-menu-bouton.w--current {
-  background-color: #ff69b4 !important; /* Rose */
-  border-color: #ff69b4 !important;
+  background-color: #ffbbad !important; /* Rose correct */
+  border-color: #ffbbad !important;
 }
 
 ._2-menu-bouton.w--current h1 {
@@ -40,7 +40,7 @@
 
 /* Icônes avec pseudo-éléments */
 .fontello-picot-compte::before {
-  content: "👤"; /* Temporaire - remplacer par le bon code */
+  content: "\e818"; /* Code pour l'icône "user" */
   font-family: Fontello, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
@@ -57,7 +57,7 @@
 }
 
 .croix::before {
-  content: "✕"; /* Temporaire - remplacer par le bon code */
+  content: "\e805"; /* Code pour l'icône "cancel" */
   font-family: Fontello, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
