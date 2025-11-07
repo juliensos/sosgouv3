@@ -263,14 +263,23 @@ document.addEventListener('DOMContentLoaded', function() {
         changerCompteBtn.addEventListener('click', function(e) {
             e.preventDefault();
             
+            // Déconnecter l'utilisateur
+            localStorage.removeItem('userSession');
+            
             // Fermer le modal info perso
             const infoPersoModal = document.querySelector('._4-page-modal');
             const infoPersoModalBg = document.querySelector('._3-fond-modal-pages');
             if (infoPersoModal) infoPersoModal.style.display = 'none';
             if (infoPersoModalBg) infoPersoModalBg.style.display = 'none';
             
-            // Déconnecter l'utilisateur
-            logout();
+            // Ouvrir le modal de connexion
+            const loginModal = document.querySelector('.cont-flex');
+            const loginModalBg = document.querySelector('._3-fond-modal');
+            if (loginModal) loginModal.style.display = 'flex';
+            if (loginModalBg) loginModalBg.style.display = 'block';
+            
+            // Mettre à jour l'interface
+            updateUIForLoggedOutUser();
         });
     }
     
