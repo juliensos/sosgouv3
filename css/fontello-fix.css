@@ -9,6 +9,29 @@
   font-display: swap;
 }
 
+/* Forcer l'affichage de la zone admin */
+.admine-part {
+  background-color: #ffbb47 !important;
+  min-height: 40px !important;
+  display: flex !important;
+}
+
+.admine-part .link-admin {
+  color: #000 !important;
+  padding: 5px 10px;
+  text-decoration: underline;
+}
+
+/* Style pour les boutons de menu actifs (fond rose) */
+._2-menu-bouton.w--current {
+  background-color: #ff69b4 !important; /* Rose */
+  border-color: #ff69b4 !important;
+}
+
+._2-menu-bouton.w--current h1 {
+  color: #fff !important;
+}
+
 /* Icônes avec pseudo-éléments */
 .fontello-picot-compte::before {
   content: "👤"; /* Temporaire - remplacer par le bon code */
