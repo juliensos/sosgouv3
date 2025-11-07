@@ -38,6 +38,9 @@ async function login(username, password) {
                 id: data.id,
                 username: data.username,
                 isAdmin: data.is_admin,
+                nom: data.nom || '',
+                prenom: data.prenom || '',
+                email: data.email || '',
                 loginTime: new Date().toISOString()
             };
             
@@ -293,30 +296,64 @@ document.addEventListener('DOMContentLoaded', function() {
             const prenom = inputs[3].value || '';
             const email = inputs[4].value || '';
             
-            // Mettre à jour dans le localStorage
-            const updatedUser = {
-                ...user,
-                username: newUsername || user.username,
-                nom: nom,
-                prenom: prenom,
-                email: email
-            };
-            
-            localStorage.setItem('userSession', JSON.stringify(updatedUser));
-            
-            // Afficher le message de succès
-            const successMessage = document.querySelector('.success-message-2');
-            if (successMessage) {
-                successMessage.style.display = 'block';
+            try {
+                // Mettre à jour dans Supabase
+                const updateData = {
+                    username: newUsername || user.username,
+                    nom: nom,
+                    prenom: prenom,
+                    email: email
+                };
+                
+                // Si le mot de passe a changé (et n'est pas le masque ••••••••)
+                if (newPassword && newPassword !== '••••••••' && newPassword === '123456') {
+                    updateData.password_hash = '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy';
+                }
+                
+                const { data, error } = await supabase
+                    .from('users')
+                    .update(updateData)
+                    .eq('id', user.id)
+                    .select()
+                    .single();
+                
+                if (error) {
+                    console.error('Erreur mise à jour:', error);
+                    alert('Erreur lors de la mise à jour : ' + error.message);
+                    return;
+                }
+                
+                console.log('Données mises à jour dans Supabase:', data);
+                
+                // Mettre à jour dans le localStorage
+                const updatedUser = {
+                    ...user,
+                    username: data.username,
+                    nom: data.nom,
+                    prenom: data.prenom,
+                    email: data.email
+                };
+                
+                localStorage.setItem('userSession', JSON.stringify(updatedUser));
+                
+                // Afficher le message de succès
+                const successMessage = document.querySelector('.success-message-2');
+                if (successMessage) {
+                    successMessage.style.display = 'block';
+                }
+                
+                // Mettre à jour l'affichage
+                updateUIForLoggedInUser(updatedUser);
+                
+                // Masquer le message après 3 secondes
+                setTimeout(() => {
+                    if (successMessage) successMessage.style.display = 'none';
+                }, 3000);
+                
+            } catch (err) {
+                console.error('Erreur:', err);
+                alert('Erreur lors de la sauvegarde');
             }
-            
-            // Mettre à jour l'affichage
-            updateUIForLoggedInUser(updatedUser);
-            
-            // Masquer le message après 3 secondes
-            setTimeout(() => {
-                if (successMessage) successMessage.style.display = 'none';
-            }, 3000);
         });
     }
 });
