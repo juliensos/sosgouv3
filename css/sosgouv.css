@@ -4745,7 +4745,7 @@ blockquote {
   padding: 40px 10px 10px 0;
 }
 
-._w-selecta-copy {
+._5-selecta {
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   flex-flow: row;
@@ -8374,6 +8374,7 @@ blockquote {
   font-family: Pinokiosanstrial, Arial, sans-serif;
   font-size: 8px;
   font-weight: 500;
+  display: none;
 }
 
 ._2-mini-bouton-detail {
@@ -9181,8 +9182,8 @@ blockquote {
   border: 5px solid #000;
   flex: 1;
   width: 100%;
-  padding: 0 20px 20px 0;
-  display: none;
+  padding: 20px;
+  display: block;
   overflow: auto;
 }
 
@@ -9279,22 +9280,23 @@ blockquote {
   padding-right: 0;
 }
 
-.heading-20 {
-  color: var(--color-3);
+.heading-4-nom-prenom {
+  color: var(--sos-yellow);
   text-transform: uppercase;
   white-space: nowrap;
   font-weight: 900;
 }
 
-.heading-20.grey {
+.heading-4-nom-prenom.grey {
   color: var(--new-grey-50);
+  font-weight: 500;
 }
 
-.heading-20.light {
+.heading-4-nom-prenom.light {
   font-weight: 700;
 }
 
-.heading-20.d {
+.heading-4-nom-prenom.d {
   flex: 1;
   font-size: 1.3rem;
 }
@@ -9357,7 +9359,7 @@ blockquote {
   flex-flow: wrap;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 10px;
   padding-bottom: 0;
   padding-left: 20px;
@@ -9532,14 +9534,10 @@ blockquote {
   display: flex;
 }
 
-.div-block-290 {
-  padding-left: 20px;
-}
-
 .nom-prenom-metier {
   grid-column-gap: 4px;
   grid-row-gap: 4px;
-  flex-flow: row;
+  flex-flow: wrap;
   margin-bottom: 5px;
   display: flex;
 }
@@ -9550,13 +9548,13 @@ blockquote {
   grid-template-rows: auto auto;
   grid-template-columns: minmax(224px, 3fr) 1fr;
   grid-auto-columns: 1fr;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   display: grid;
 }
 
 .boutons-perso-group {
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
   justify-content: flex-end;
   align-items: flex-start;
   width: 100%;
@@ -9577,10 +9575,10 @@ blockquote {
   display: flex;
 }
 
-.div-block-295 {
+.bloc-m-tiers {
   grid-column-gap: 5px;
   grid-row-gap: 5px;
-  flex: 1;
+  flex: 0 auto;
   justify-content: space-between;
   display: flex;
 }
@@ -9694,9 +9692,10 @@ blockquote {
 .mon-inputdrop {
   background-color: var(--sos-white);
   color: var(--black-100);
+  width: auto;
   height: 25px;
   margin-bottom: 0;
-  padding: 0 0 0 5px;
+  padding: 0 5px;
   font-family: Pinokiosanstrial, Arial, sans-serif;
   font-size: 10px;
   font-weight: 500;
@@ -9798,7 +9797,7 @@ blockquote {
   line-height: 12px;
 }
 
-.link-block-3 {
+.nom-pr-nom {
   grid-column-gap: 5px;
   grid-row-gap: 5px;
   display: flex;
@@ -10684,6 +10683,30 @@ blockquote {
   display: flex;
 }
 
+.heading-31 {
+  color: var(--black-100);
+}
+
+.fontello-statut {
+  color: var(--sos-white);
+  margin-left: 5px;
+  font-family: Fontello, Arial, sans-serif;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.fontello-statut._1 {
+  color: var(--new-grey);
+}
+
+.fontello-statut._2 {
+  color: var(--sos-yellow);
+}
+
+.fontello-statut._3 {
+  color: var(--sos-green);
+}
+
 @media screen and (max-width: 991px) {
   .div-block-168 {
     margin-top: 0;
@@ -11537,7 +11560,7 @@ blockquote {
     margin-top: 5px;
   }
 
-  ._w-selecta-copy {
+  ._5-selecta {
     grid-column-gap: 0px;
     grid-row-gap: 0px;
   }
@@ -12184,11 +12207,6 @@ blockquote {
     display: none;
   }
 
-  ._3-4_sous-menu-content-4 {
-    padding-right: 0;
-    display: none;
-  }
-
   ._3-1_sous-menu-content-1, ._3-0_sous-menu-content-0 {
     display: none;
   }
@@ -12216,7 +12234,7 @@ blockquote {
     flex-flow: wrap;
   }
 
-  .heading-20 {
+  .heading-4-nom-prenom {
     font-size: 16px;
   }
 
@@ -12272,7 +12290,7 @@ blockquote {
   }
 
   .nom-prenom-metier {
-    flex-flow: column;
+    flex-flow: wrap;
     padding-right: 10px;
   }
 
@@ -12281,8 +12299,10 @@ blockquote {
   }
 
   .boutons-perso-group {
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
     flex-flow: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: flex-start;
     display: flex;
   }
@@ -12303,7 +12323,7 @@ blockquote {
     display: flex;
   }
 
-  .div-block-295 {
+  .bloc-m-tiers {
     grid-column-gap: 5px;
     grid-row-gap: 5px;
     justify-content: flex-start;
