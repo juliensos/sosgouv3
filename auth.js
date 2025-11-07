@@ -140,9 +140,16 @@ function updateUIForLoggedInUser(user) {
     }
 
     // Pré-remplir les informations personnelles
-    const usernameInput = document.querySelector('input[placeholder="nom d\'utilisateur*"]');
-    if (usernameInput) {
-        usernameInput.value = user.username;
+    const infoPersoForm = document.querySelector('form[id="email-form-16"]');
+    if (infoPersoForm) {
+        const inputs = infoPersoForm.querySelectorAll('input[type="text"]');
+        if (inputs.length >= 5) {
+            inputs[0].value = user.username; // nom d'utilisateur
+            inputs[1].value = '••••••••'; // mot de passe masqué
+            inputs[2].value = user.nom || ''; // nom
+            inputs[3].value = user.prenom || ''; // prénom
+            inputs[4].value = user.email || ''; // email
+        }
     }
 
     // Modifier le menu pour afficher "me déconnecter" au lieu de "me connecter"
@@ -244,6 +251,72 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 alert(result.message);
             }
+        });
+    }
+    
+    // ========== BOUTON "CHANGER DE COMPTE" ==========
+    const changerCompteBtn = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0c4d"]');
+    if (changerCompteBtn) {
+        changerCompteBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Fermer le modal info perso
+            const infoPersoModal = document.querySelector('._4-page-modal');
+            const infoPersoModalBg = document.querySelector('._3-fond-modal-pages');
+            if (infoPersoModal) infoPersoModal.style.display = 'none';
+            if (infoPersoModalBg) infoPersoModalBg.style.display = 'none';
+            
+            // Déconnecter l'utilisateur
+            logout();
+        });
+    }
+    
+    // ========== ENREGISTREMENT DES INFORMATIONS PERSONNELLES ==========
+    const saveInfoBtn = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0c65"]');
+    const infoPersoForm = document.querySelector('form[id="email-form-16"]');
+    
+    if (saveInfoBtn && infoPersoForm) {
+        saveInfoBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            const user = getUserSession();
+            if (!user) {
+                alert('Vous devez être connecté');
+                return;
+            }
+            
+            // Récupérer les valeurs des champs
+            const inputs = infoPersoForm.querySelectorAll('input[type="text"]');
+            const newUsername = inputs[0].value;
+            const newPassword = inputs[1].value;
+            const nom = inputs[2].value || '';
+            const prenom = inputs[3].value || '';
+            const email = inputs[4].value || '';
+            
+            // Mettre à jour dans le localStorage
+            const updatedUser = {
+                ...user,
+                username: newUsername || user.username,
+                nom: nom,
+                prenom: prenom,
+                email: email
+            };
+            
+            localStorage.setItem('userSession', JSON.stringify(updatedUser));
+            
+            // Afficher le message de succès
+            const successMessage = document.querySelector('.success-message-2');
+            if (successMessage) {
+                successMessage.style.display = 'block';
+            }
+            
+            // Mettre à jour l'affichage
+            updateUIForLoggedInUser(updatedUser);
+            
+            // Masquer le message après 3 secondes
+            setTimeout(() => {
+                if (successMessage) successMessage.style.display = 'none';
+            }, 3000);
         });
     }
 });
