@@ -1,124 +1,105 @@
 // Gestion des menus et modaux
 document.addEventListener('DOMContentLoaded', function() {
     
-    // ========== GESTION DU MENU UTILISATEUR (en haut à droite) ==========
-    
-    // Bouton compte utilisateur
+    // ========== MENU UTILISATEUR (en haut à droite) ==========
     const userButton = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd097a"]');
     const userMenu = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0984"]');
     
     if (userButton && userMenu) {
         userButton.addEventListener('click', function(e) {
             e.preventDefault();
-            // Toggle du menu utilisateur
-            if (userMenu.style.display === 'none' || userMenu.style.display === '') {
-                userMenu.style.display = 'block';
-            } else {
-                userMenu.style.display = 'none';
-            }
+            userMenu.style.display = userMenu.style.display === 'none' || userMenu.style.display === '' ? 'block' : 'none';
         });
     }
     
     // Fermer le menu si on clique ailleurs
     document.addEventListener('click', function(e) {
-        if (userMenu && !userButton.contains(e.target) && !userMenu.contains(e.target)) {
+        if (userMenu && userButton && !userButton.contains(e.target) && !userMenu.contains(e.target)) {
             userMenu.style.display = 'none';
         }
     });
     
-    // ========== GESTION DU MODAL DE CONNEXION ==========
-    
-    // Lien "me connecter" dans le menu
+    // ========== MODAL CONNEXION ==========
     const connectLink = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0985"]');
     const loginModal = document.querySelector('.cont-flex');
-    const loginModalBackground = document.querySelector('._3-fond-modal');
+    const loginModalBg = document.querySelector('._3-fond-modal');
     
     if (connectLink) {
         connectLink.addEventListener('click', function(e) {
             e.preventDefault();
-            
-            // Si l'utilisateur est connecté, cette fonction sera gérée par auth.js (déconnexion)
             if (this.textContent.trim() === 'me connecter') {
-                // Ouvrir le modal de connexion
                 if (loginModal) loginModal.style.display = 'flex';
-                if (loginModalBackground) loginModalBackground.style.display = 'block';
+                if (loginModalBg) loginModalBg.style.display = 'block';
                 if (userMenu) userMenu.style.display = 'none';
             }
         });
     }
     
-    // Bouton de fermeture du modal de connexion
+    // Fermer modal connexion
     const closeLoginModal = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd09dd"]');
     if (closeLoginModal) {
         closeLoginModal.addEventListener('click', function(e) {
             e.preventDefault();
             if (loginModal) loginModal.style.display = 'none';
-            if (loginModalBackground) loginModalBackground.style.display = 'none';
+            if (loginModalBg) loginModalBg.style.display = 'none';
         });
     }
     
-    // Clic sur le fond du modal pour fermer
-    if (loginModalBackground) {
-        loginModalBackground.addEventListener('click', function() {
+    if (loginModalBg) {
+        loginModalBg.addEventListener('click', function() {
             if (loginModal) loginModal.style.display = 'none';
             this.style.display = 'none';
         });
     }
     
-    // ========== GESTION DU MODAL "INFO PERSONNELLES" ==========
-    
+    // ========== MODAL INFO PERSONNELLES ==========
     const infoPersoLink = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0987"]');
-    const infoPersoModal = document.querySelector('._4-page-modal');
-    const infoPersoModalBackground = document.querySelector('._3-fond-modal-pages');
+    const infoPersoModal = document.querySelector('.info-perso-modal');
+    const infoPersoModalBg = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0c74"]');
     
     if (infoPersoLink) {
         infoPersoLink.addEventListener('click', function(e) {
             e.preventDefault();
             if (infoPersoModal) infoPersoModal.style.display = 'block';
-            if (infoPersoModalBackground) infoPersoModalBackground.style.display = 'block';
+            if (infoPersoModalBg) infoPersoModalBg.style.display = 'block';
             if (userMenu) userMenu.style.display = 'none';
         });
     }
     
-    // Bouton de fermeture du modal info perso
+    // Fermer modal info perso
     const closeInfoPersoModal = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0c45"]');
     if (closeInfoPersoModal) {
         closeInfoPersoModal.addEventListener('click', function(e) {
             e.preventDefault();
             if (infoPersoModal) infoPersoModal.style.display = 'none';
-            if (infoPersoModalBackground) infoPersoModalBackground.style.display = 'none';
+            if (infoPersoModalBg) infoPersoModalBg.style.display = 'none';
         });
     }
     
-    // Clic sur le fond du modal pour fermer
-    if (infoPersoModalBackground) {
-        infoPersoModalBackground.addEventListener('click', function() {
+    if (infoPersoModalBg) {
+        infoPersoModalBg.addEventListener('click', function() {
             if (infoPersoModal) infoPersoModal.style.display = 'none';
             this.style.display = 'none';
         });
     }
     
-    // ========== GESTION DU MENU PRINCIPAL (pages de contenu) ==========
-    
-    // Tous les contenus de page
+    // ========== MENU PRINCIPAL (pages de contenu) ==========
     const contentSections = [
-        document.querySelector('._3-0_sous-menu-content-0'), // A propos (index 0)
-        document.querySelector('._3-1_sous-menu-content-1'), // Gouvernements publiés (index 1)
-        document.querySelector('._3-2_sous-menu-content-2'), // Composer gouvernement (index 2)
-        document.querySelector('._3-3_sous-menu-content-3'), // Ajouter personnalité (index 3)
-        document.querySelector('._3-4_sous-menu-content-4')  // Liste personnalités (index 4)
+        document.querySelector('._3-0_sous-menu-content-0'), // A propos
+        document.querySelector('._3-1_sous-menu-content-1'), // Gouvernements publiés
+        document.querySelector('._3-2_sous-menu-content-2'), // Composer gouvernement
+        document.querySelector('._3-3_sous-menu-content-3'), // Ajouter personnalité
+        document.querySelector('._3-4_sous-menu-content-4')  // Liste personnalités
     ];
     
-    // Tous les boutons de menu
     const menuButtons = [
-        null, // Pas de bouton pour "A propos" (c'est le logo)
-        document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0efa"]'), // Gouvernements
-        document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0efd"]'), // Composer
-        document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0f00"]'), // Ajouter
-        document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0f03"]')  // Liste
+        null, // Pas de bouton pour A propos (c'est le logo)
+        document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0efa"]'),
+        document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0efd"]'),
+        document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0f00"]'),
+        document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0f03"]')
     ];
     
-    // Fonction pour afficher une section et masquer les autres
     function showSection(index) {
         contentSections.forEach((section, i) => {
             if (section) {
@@ -139,36 +120,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Bouton "gouvernements publiés"
-    const btnGouvernements = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0efa"]');
-    if (btnGouvernements) {
-        btnGouvernements.addEventListener('click', function(e) {
+    if (menuButtons[1]) {
+        menuButtons[1].addEventListener('click', function(e) {
             e.preventDefault();
             showSection(1);
         });
     }
     
     // Bouton "composer un gouvernement"
-    const btnComposer = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0efd"]');
-    if (btnComposer) {
-        btnComposer.addEventListener('click', function(e) {
+    if (menuButtons[2]) {
+        menuButtons[2].addEventListener('click', function(e) {
             e.preventDefault();
             showSection(2);
         });
     }
     
     // Bouton "ajouter une personnalité"
-    const btnAjouter = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0f00"]');
-    if (btnAjouter) {
-        btnAjouter.addEventListener('click', function(e) {
+    if (menuButtons[3]) {
+        menuButtons[3].addEventListener('click', function(e) {
             e.preventDefault();
             showSection(3);
         });
     }
     
     // Bouton "liste des personnalités"
-    const btnListe = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0f03"]');
-    if (btnListe) {
-        btnListe.addEventListener('click', function(e) {
+    if (menuButtons[4]) {
+        menuButtons[4].addEventListener('click', function(e) {
             e.preventDefault();
             showSection(4);
         });
@@ -184,7 +161,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // ========== INITIALISATION ==========
-    // Afficher la page "A propos" par défaut
     showSection(0);
-    
 });
