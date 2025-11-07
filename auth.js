@@ -23,6 +23,8 @@ async function login(username, password) {
             .eq('username', username)
             .single();
 
+        console.log('Data reçue de Supabase:', data);
+
         if (error || !data) {
             console.error('Utilisateur non trouvé:', error);
             return { success: false, message: 'Nom d\'utilisateur ou mot de passe incorrect' };
@@ -38,6 +40,9 @@ async function login(username, password) {
                 isAdmin: data.is_admin,
                 loginTime: new Date().toISOString()
             };
+            
+            console.log('Session créée:', userSession);
+            console.log('isAdmin:', userSession.isAdmin, 'Type:', typeof userSession.isAdmin);
             
             localStorage.setItem('userSession', JSON.stringify(userSession));
             return { success: true, user: userSession };
@@ -110,6 +115,8 @@ function getUserSession() {
 
 // Mettre à jour l'interface pour un utilisateur connecté
 function updateUIForLoggedInUser(user) {
+    console.log('updateUIForLoggedInUser appelée avec:', user);
+    
     // Afficher le nom d'utilisateur
     const usernameDisplay = document.querySelector('.connected-username');
     if (usernameDisplay) {
@@ -119,10 +126,15 @@ function updateUIForLoggedInUser(user) {
 
     // Afficher la partie admin si l'utilisateur est admin
     const adminPart = document.querySelector('.admine-part');
+    console.log('adminPart trouvé:', adminPart);
+    console.log('user.isAdmin:', user.isAdmin);
+    
     if (adminPart) {
-        if (user.isAdmin) {
+        if (user.isAdmin === true) {
+            console.log('Affichage de la zone admin');
             adminPart.style.display = 'flex';
         } else {
+            console.log('Masquage de la zone admin');
             adminPart.style.display = 'none';
         }
     }
