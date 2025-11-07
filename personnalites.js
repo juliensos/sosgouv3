@@ -3,12 +3,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let tempVideos = [];
     let tempArticles = [];
-    let allPersonnalites = []; // Cache des données
+    let allPersonnalites = [];
     
     // ========== MODAL ADMIN - OUVRIR ==========
     const adminLink = document.querySelector('[data-w-id="04ef9136-aa3c-8a32-1874-52c7613bd891"]');
-    const adminModal = document.querySelector('.admin-perso-modal');
-    const adminModalBg = document.querySelector('.admin-modal-bg');
+    const adminModal = document.querySelectorAll('._4-page-modal')[1]; // Le 2ème modal
+    const adminModalBg = document.querySelector('[data-w-id="74c58c9f-a3ac-f587-492e-d6624dd5467b"]');
     
     if (adminLink) {
         adminLink.addEventListener('click', function(e) {
@@ -74,9 +74,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!videosList) return;
         videosList.innerHTML = tempVideos.length > 0 ? '<strong>Vidéos:</strong>' : '';
         videosList.innerHTML += tempVideos.map((url, index) => `
-            <div style="display:flex; align-items:center; margin:5px 0; padding:8px; background:#f5f5f5; border-radius:4px;">
-                <span style="flex:1; font-size:13px; overflow:hidden; text-overflow:ellipsis;">${url}</span>
-                <button onclick="removeVideo(${index})" type="button" style="margin-left:10px; padding:4px 8px; background:#ff4444; color:white; border:none; border-radius:3px; cursor:pointer;">✕</button>
+            <div style="display:flex;align-items:center;margin:5px 0;padding:8px;background:#f5f5f5;border-radius:4px;">
+                <span style="flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;">${url}</span>
+                <button onclick="removeVideo(${index})" type="button" style="margin-left:10px;padding:4px 8px;background:#ff4444;color:white;border:none;border-radius:3px;cursor:pointer;">✕</button>
             </div>
         `).join('');
     }
@@ -85,9 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!articlesList) return;
         articlesList.innerHTML = tempArticles.length > 0 ? '<strong>Articles:</strong>' : '';
         articlesList.innerHTML += tempArticles.map((url, index) => `
-            <div style="display:flex; align-items:center; margin:5px 0; padding:8px; background:#f5f5f5; border-radius:4px;">
-                <span style="flex:1; font-size:13px; overflow:hidden; text-overflow:ellipsis;">${url}</span>
-                <button onclick="removeArticle(${index})" type="button" style="margin-left:10px; padding:4px 8px; background:#ff4444; color:white; border:none; border-radius:3px; cursor:pointer;">✕</button>
+            <div style="display:flex;align-items:center;margin:5px 0;padding:8px;background:#f5f5f5;border-radius:4px;">
+                <span style="flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;">${url}</span>
+                <button onclick="removeArticle(${index})" type="button" style="margin-left:10px;padding:4px 8px;background:#ff4444;color:white;border:none;border-radius:3px;cursor:pointer;">✕</button>
             </div>
         `).join('');
     }
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateArticlesList();
     };
     
-    // ========== FORMULAIRE ADMIN - AJOUTER PERSONNALITÉ ==========
+    // ========== FORMULAIRE ADMIN ==========
     const adminForm = document.getElementById('admin-add-perso-form');
     if (adminForm) {
         adminForm.addEventListener('submit', async function(e) {
@@ -152,7 +152,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (adminModal) adminModal.style.display = 'none';
                 if (adminModalBg) adminModalBg.style.display = 'none';
                 
-                // Recharger la liste si elle est affichée
                 if (document.querySelector('._3-4_sous-menu-content-4').style.display !== 'none') {
                     loadPersonnalitesList();
                 }
@@ -170,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateArticlesList();
     }
     
-    // ========== RECHERCHE PERSONNALITÉ ==========
+    // ========== RECHERCHE ==========
     const searchInput = document.getElementById('search-perso-input');
     const searchDropdown = document.getElementById('search-results-dropdown');
     let searchTimeout;
@@ -296,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // ========== LISTE DES PERSONNALITÉS AVEC TRI ET FILTRES ==========
+    // ========== LISTE AVEC TRI ET FILTRES ==========
     function getStatutLabel(statut) {
         const labels = {0: 'néant', 1: 'jamais', 2: 'sous condition', 3: 'ok'};
         return `${statut} - ${labels[statut] || 'inconnu'}`;
@@ -331,17 +330,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const sortBy = document.getElementById('sort-select').value;
         const filterStatut = document.getElementById('filter-statut').value;
         
-        // Filtrer
         let filtered = allPersonnalites;
         if (filterStatut !== 'all') {
             filtered = filtered.filter(p => p.statut === parseInt(filterStatut));
         }
         
-        // Trier
         if (sortBy === 'alpha') {
             filtered.sort((a, b) => a.nom.localeCompare(b.nom));
             
-            // Grouper par lettre
             const grouped = {};
             filtered.forEach(perso => {
                 const letter = perso.nom[0].toUpperCase();
@@ -351,13 +347,12 @@ document.addEventListener('DOMContentLoaded', function() {
             
             listContainer.innerHTML = Object.keys(grouped).sort().map(letter => `
                 <div style="margin:30px 0;">
-                    <h2 style="background:#ffbbad; padding:10px; border-radius:5px;">${letter}</h2>
+                    <h2 style="background:#ffbbad;padding:10px;border-radius:5px;">${letter}</h2>
                     ${grouped[letter].map(perso => renderPersonnaliteCard(perso)).join('')}
                 </div>
             `).join('');
             
         } else if (sortBy === 'metier') {
-            // Grouper par métier
             const grouped = {};
             filtered.forEach(perso => {
                 if (perso.metiers && perso.metiers.length > 0) {
@@ -373,7 +368,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             listContainer.innerHTML = Object.keys(grouped).sort().map(metier => `
                 <div style="margin:30px 0;">
-                    <h2 style="background:#ffbbad; padding:10px; border-radius:5px;">${metier}</h2>
+                    <h2 style="background:#ffbbad;padding:10px;border-radius:5px;">${metier}</h2>
                     ${grouped[metier].map(perso => renderPersonnaliteCard(perso)).join('')}
                 </div>
             `).join('');
@@ -382,8 +377,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function renderPersonnaliteCard(perso) {
         return `
-            <div style="padding:15px; margin:10px 0; border:1px solid #ddd; border-radius:5px; background:#fff;">
-                <h3 style="margin:0 0 5px 0;">${perso.prenom} ${perso.nom} <span style="font-size:14px; color:#666;">[${getStatutLabel(perso.statut)}]</span></h3>
+            <div style="padding:15px;margin:10px 0;border:1px solid #ddd;border-radius:5px;background:#fff;">
+                <h3 style="margin:0 0 5px 0;">${perso.prenom} ${perso.nom} <span style="font-size:14px;color:#666;">[${getStatutLabel(perso.statut)}]</span></h3>
                 ${perso.metiers && perso.metiers.length > 0 ? '<p style="margin:5px 0;"><strong>Métiers:</strong> ' + perso.metiers.join(', ') + '</p>' : ''}
                 ${perso.bio_courte ? '<p style="margin:5px 0;">' + perso.bio_courte + '</p>' : ''}
                 ${perso.expertise ? '<p style="margin:5px 0;"><strong>Expertise:</strong> ' + perso.expertise.substring(0, 150) + (perso.expertise.length > 150 ? '...' : '') + '</p>' : ''}
@@ -391,19 +386,12 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
     
-    // Événements pour les filtres
     const sortSelect = document.getElementById('sort-select');
     const filterSelect = document.getElementById('filter-statut');
     
-    if (sortSelect) {
-        sortSelect.addEventListener('change', renderPersonnalitesList);
-    }
+    if (sortSelect) sortSelect.addEventListener('change', renderPersonnalitesList);
+    if (filterSelect) filterSelect.addEventListener('change', renderPersonnalitesList);
     
-    if (filterSelect) {
-        filterSelect.addEventListener('change', renderPersonnalitesList);
-    }
-    
-    // Charger la liste quand on clique sur le bouton
     const listeBouton = document.querySelector('[data-w-id="b9597464-fc2b-b33e-b4cb-35073abd0f03"]');
     if (listeBouton) {
         listeBouton.addEventListener('click', function() {
