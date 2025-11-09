@@ -262,6 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     async function loadPersonnalite(id) {
+        console.log('🔍 Chargement personnalité ID:', id);
         try {
             const { data, error } = await supabase
                 .from('personnalites')
@@ -269,8 +270,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 .eq('id', id)
                 .single();
             
-            if (error) return;
+            if (error) {
+                console.error('❌ Erreur chargement:', error);
+                return;
+            }
             
+            console.log('✅ Personnalité chargée:', data);
             currentEditingId = id; // Mode édition
             
             document.getElementById('admin-nom').value = data.nom || '';
@@ -288,9 +293,15 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Afficher le bouton supprimer
             const deleteBtn = document.getElementById('delete-perso-btn');
-            if (deleteBtn) deleteBtn.style.display = 'inline-block';
+            console.log('🗑️ Bouton supprimer trouvé:', deleteBtn);
+            if (deleteBtn) {
+                deleteBtn.style.display = 'inline-block';
+                console.log('✅ Bouton supprimer affiché');
+            } else {
+                console.error('❌ Bouton supprimer introuvable');
+            }
         } catch (err) {
-            console.error(err);
+            console.error('❌ Erreur:', err);
         }
     }
     
