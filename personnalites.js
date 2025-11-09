@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             currentEditingId = null; // Reset
             resetAdminForm();
+            
+            // Cacher le bouton supprimer en mode création
+            const deleteBtn = document.getElementById('delete-perso-btn');
+            if (deleteBtn) deleteBtn.style.display = 'none';
+            
             if (adminModal) adminModal.style.display = 'block';
             if (adminModalBg) adminModalBg.style.display = 'block';
         });
@@ -203,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
             clearTimeout(searchTimeout);
             const query = this.value.trim().toLowerCase();
             
-            if (query.length < 1) {
+            if (query.length < 2) {
                 searchDropdown.style.display = 'none';
                 return;
             }
@@ -216,7 +221,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         .or(`nom.ilike.%${query}%,prenom.ilike.%${query}%`)
                         .limit(10);
                     
-                    if (error) return;
+                    if (error) {
+                        console.error('Erreur recherche:', error);
+                        return;
+                    }
                     
                     if (data && data.length > 0) {
                         searchDropdown.innerHTML = data.map(perso => `
@@ -239,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         searchDropdown.style.display = 'block';
                     }
                 } catch (err) {
-                    console.error(err);
+                    console.error('Erreur recherche:', err);
                 }
             }, 300);
         });
@@ -249,6 +257,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 searchDropdown.style.display = 'none';
             }
         });
+    } else {
+        console.error('searchInput ou searchDropdown introuvable');
     }
     
     async function loadPersonnalite(id) {
@@ -275,9 +285,51 @@ document.addEventListener('DOMContentLoaded', function() {
             tempArticles = data.liens_articles || [];
             updateVideosList();
             updateArticlesList();
+            
+            // Afficher le bouton supprimer
+            const deleteBtn = document.getElementById('delete-perso-btn');
+            if (deleteBtn) deleteBtn.style.display = 'inline-block';
         } catch (err) {
             console.error(err);
         }
+    }
+    
+    // Bouton supprimer
+    const deleteBtn = document.getElementById('delete-perso-btn');
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', async function() {
+            if (!currentEditingId) return;
+            
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cette personnalité ?')) {
+                return;
+            }
+            
+            try {
+                const { error } = await supabase
+                    .from('personnalites')
+                    .delete()
+                    .eq('id', currentEditingId);
+                
+                if (error) {
+                    alert('Erreur : ' + error.message);
+                    return;
+                }
+                
+                alert('Personnalité supprimée avec succès');
+                currentEditingId = null;
+                resetAdminForm();
+                this.style.display = 'none';
+                
+                if (adminModal) adminModal.style.display = 'none';
+                if (adminModalBg) adminModalBg.style.display = 'none';
+                
+                if (document.querySelector('._3-4_sous-menu-content-4').style.display !== 'none') {
+                    loadPersonnalitesList();
+                }
+            } catch (err) {
+                alert('Erreur lors de la suppression');
+            }
+        });
     }
     
     // ========== FORMULAIRE UTILISATEUR ==========
@@ -295,7 +347,31 @@ document.addEventListener('DOMContentLoaded', function() {
             const nom = document.getElementById('user-nom').value.trim();
             const prenom = document.getElementById('user-prenom').value.trim();
             
+            // Vérification champs obligatoires
+            if (!nom || !prenom) {
+                alert('Le nom et le prénom sont obligatoires');
+                return;
+            }
+            
             try {
+                // Vérifier si la personnalité existe déjà
+                const { data: existing, error: checkError } = await supabase
+                    .from('personnalites')
+                    .select('id, nom, prenom')
+                    .ilike('nom', nom)
+                    .ilike('prenom', prenom);
+                
+                if (checkError) {
+                    alert('Erreur lors de la vérification : ' + checkError.message);
+                    return;
+                }
+                
+                if (existing && existing.length > 0) {
+                    alert('Cette personnalité existe déjà dans la base de données');
+                    return;
+                }
+                
+                // Ajouter la personnalité
                 const { data, error } = await supabase
                     .from('personnalites')
                     .insert([{
@@ -406,6 +482,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const statutClass = getStatutClass(perso.statut);
         const metier = perso.metiers && perso.metiers.length > 0 ? perso.metiers[0] : '';
         
+        const user = getUserSession();
+        const isAdmin = user && user.isAdmin;
+        
         return `
             <div class="_3-grid-perso">
                 <div class="nom-prenom-metier">
@@ -420,22 +499,57 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="boutons-perso-group">
                     <div class="like-bloc">
-                        <div class="_2-picto-fontello-bouton black-stroke"></div>
+                        <div class="_2-picto-fontello-bouton black-stroke icon-heart"></div>
                         <div class="_w-courant _w-bold _w-pink"><sup>0</sup></div>
                     </div>
                     <a href="#" class="_2-mini-bouton mini w-inline-block">
-                        <div class="_2-picto-fontello-bouton"></div>
+                        <div class="_2-picto-fontello-bouton icon-pin"></div>
                         <h6 class="heading-dyn mini">épingler</h6>
                     </a>
                     <a href="#" class="_2-mini-bouton mini w-inline-block">
-                        <div class="_2-picto-fontello-bouton"></div>
+                        <div class="_2-picto-fontello-bouton icon-edit"></div>
                         <h6 class="heading-dyn mini">Brouillon</h6>
                     </a>
+                    ${isAdmin ? `
+                    <button onclick="deletePersonnaliteFromList('${perso.id}')" style="background:#ff4444;color:white;border:none;padding:6px 12px;border-radius:3px;cursor:pointer;font-size:12px;margin-left:5px;">
+                        🗑️ Supprimer
+                    </button>
+                    ` : ''}
                 </div>
                 ${perso.bio_courte ? `<p class="short-bio">${perso.bio_courte}</p>` : ''}
             </div>
         `;
     }
+    
+    // Fonction globale pour supprimer depuis la liste
+    window.deletePersonnaliteFromList = async function(id) {
+        const user = getUserSession();
+        if (!user || !user.isAdmin) {
+            alert('Accès réservé aux administrateurs');
+            return;
+        }
+        
+        if (!confirm('Êtes-vous sûr de vouloir supprimer cette personnalité ?')) {
+            return;
+        }
+        
+        try {
+            const { error } = await supabase
+                .from('personnalites')
+                .delete()
+                .eq('id', id);
+            
+            if (error) {
+                alert('Erreur : ' + error.message);
+                return;
+            }
+            
+            alert('Personnalité supprimée avec succès');
+            loadPersonnalitesList();
+        } catch (err) {
+            alert('Erreur lors de la suppression');
+        }
+    };
     
     const sortSelect = document.getElementById('sort-select');
     const filterSelect = document.getElementById('filter-statut');

@@ -223,12 +223,15 @@
                                     <a href="#" id="add-article-btn" class="_w-link-bloc-button small w-button">ajouter lien article</a>
                                 </div>
                                 <div class="pubis-utons">
-                                    <div class="flex-v">
+                                    <div class="flex-v" style="display:flex;gap:10px;align-items:center;">
                                         <button type="submit" class="_w-link-bloc-button publier">
                                             <div class="_2-picto-fontello-bouton"></div>
                                             <h6>
                                                 <strong class="heading-bold-text">valider</strong>
                                             </h6>
+                                        </button>
+                                        <button type="button" id="delete-perso-btn" style="display:none;background:#ff4444;color:white;padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">
+                                            🗑️ Supprimer
                                         </button>
                                     </div>
                                 </div>
@@ -320,8 +323,8 @@
                         <div class="_3-form-bloc w-form">
                             <form id="user-add-perso-form" name="email-form-11" data-name="Email Form 11" method="get">
                                 <div class="_3-champs-texte">
-                                    <input class="mon-input w-input" maxlength="256" name="name-3" data-name="Name 3" placeholder="nom" type="text" id="user-nom"/>
-                                    <input class="mon-input w-input" maxlength="256" name="name-3" data-name="Name 3" placeholder="prénom" type="text" id="user-prenom"/>
+                                    <input class="mon-input w-input" maxlength="256" name="name-3" data-name="Name 3" placeholder="nom" type="text" id="user-nom" required/>
+                                    <input class="mon-input w-input" maxlength="256" name="name-3" data-name="Name 3" placeholder="prénom" type="text" id="user-prenom" required/>
                                 </div>
                                 <div class="pubis-utons">
                                     <div class="flex---gap-10">
