@@ -1,13 +1,14 @@
-// Gestion des personnalités avec statut, tri et filtres
+// Gestion des personnalités
 document.addEventListener('DOMContentLoaded', function() {
     
     let tempVideos = [];
     let tempArticles = [];
     let allPersonnalites = [];
+    let currentEditingId = null; // Pour savoir si on édite ou crée
     
-    // ========== MODAL ADMIN - OUVRIR ==========
+    // ========== MODAL ADMIN ==========
     const adminLink = document.querySelector('[data-w-id="04ef9136-aa3c-8a32-1874-52c7613bd891"]');
-    const adminModal = document.querySelectorAll('._4-page-modal')[1]; // Le 2ème modal
+    const adminModal = document.querySelectorAll('._4-page-modal')[1];
     const adminModalBg = document.querySelector('[data-w-id="74c58c9f-a3ac-f587-492e-d6624dd5467b"]');
     
     if (adminLink) {
@@ -18,18 +19,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Accès réservé aux administrateurs');
                 return;
             }
+            currentEditingId = null; // Reset
+            resetAdminForm();
             if (adminModal) adminModal.style.display = 'block';
             if (adminModalBg) adminModalBg.style.display = 'block';
         });
     }
     
-    // Fermer modal admin
     const closeAdminModal = document.querySelector('[data-w-id="577ba5b4-1e99-3de5-9565-2497057080c0"]');
     if (closeAdminModal) {
         closeAdminModal.addEventListener('click', function(e) {
             e.preventDefault();
             if (adminModal) adminModal.style.display = 'none';
             if (adminModalBg) adminModalBg.style.display = 'none';
+            currentEditingId = null;
             resetAdminForm();
         });
     }
@@ -38,11 +41,12 @@ document.addEventListener('DOMContentLoaded', function() {
         adminModalBg.addEventListener('click', function() {
             if (adminModal) adminModal.style.display = 'none';
             this.style.display = 'none';
+            currentEditingId = null;
             resetAdminForm();
         });
     }
     
-    // ========== AJOUT LIENS VIDEO/ARTICLE ==========
+    // ========== VIDEOS/ARTICLES ==========
     const addVideoBtn = document.getElementById('add-video-btn');
     const addArticleBtn = document.getElementById('add-article-btn');
     const videosList = document.getElementById('videos-list');
@@ -102,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateArticlesList();
     };
     
-    // ========== FORMULAIRE ADMIN ==========
+    // ========== FORMULAIRE ADMIN - AJOUT/UPDATE ==========
     const adminForm = document.getElementById('admin-add-perso-form');
     if (adminForm) {
         adminForm.addEventListener('submit', async function(e) {
@@ -124,30 +128,50 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const metiers = metiersInput ? metiersInput.split(',').map(m => m.trim()).filter(m => m) : [];
             
+            const dataToSave = {
+                nom: nom,
+                prenom: prenom,
+                metiers: metiers,
+                bio_courte: bio,
+                expertise: expertise,
+                engagement_politique: engagement,
+                liens_videos: tempVideos,
+                liens_articles: tempArticles,
+                statut: statut
+            };
+            
             try {
-                const { data, error } = await supabase
-                    .from('personnalites')
-                    .insert([{
-                        nom: nom,
-                        prenom: prenom,
-                        metiers: metiers,
-                        bio_courte: bio,
-                        expertise: expertise,
-                        engagement_politique: engagement,
-                        liens_videos: tempVideos,
-                        liens_articles: tempArticles,
-                        statut: statut,
-                        created_by: user.id,
-                        is_admin_created: true
-                    }])
-                    .select();
-                
-                if (error) {
-                    alert('Erreur : ' + error.message);
-                    return;
+                if (currentEditingId) {
+                    // UPDATE
+                    const { data, error } = await supabase
+                        .from('personnalites')
+                        .update(dataToSave)
+                        .eq('id', currentEditingId)
+                        .select();
+                    
+                    if (error) {
+                        alert('Erreur : ' + error.message);
+                        return;
+                    }
+                    alert('Personnalité mise à jour avec succès !');
+                } else {
+                    // INSERT
+                    dataToSave.created_by = user.id;
+                    dataToSave.is_admin_created = true;
+                    
+                    const { data, error } = await supabase
+                        .from('personnalites')
+                        .insert([dataToSave])
+                        .select();
+                    
+                    if (error) {
+                        alert('Erreur : ' + error.message);
+                        return;
+                    }
+                    alert('Personnalité ajoutée avec succès !');
                 }
                 
-                alert('Personnalité ajoutée avec succès !');
+                currentEditingId = null;
                 resetAdminForm();
                 if (adminModal) adminModal.style.display = 'none';
                 if (adminModalBg) adminModalBg.style.display = 'none';
@@ -156,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     loadPersonnalitesList();
                 }
             } catch (err) {
-                alert('Erreur lors de l\'ajout');
+                alert('Erreur lors de l\'opération');
             }
         });
     }
@@ -199,7 +223,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="search-result-item" data-perso-id="${perso.id}">
                                 <strong>${perso.prenom} ${perso.nom}</strong>
                                 ${perso.metiers && perso.metiers.length > 0 ? '<br><small>' + perso.metiers.join(', ') + '</small>' : ''}
-                                ${perso.statut ? '<br><small>Statut: ' + getStatutLabel(perso.statut) + '</small>' : ''}
                             </div>
                         `).join('');
                         searchDropdown.style.display = 'block';
@@ -237,6 +260,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 .single();
             
             if (error) return;
+            
+            currentEditingId = id; // Mode édition
             
             document.getElementById('admin-nom').value = data.nom || '';
             document.getElementById('admin-prenom').value = data.prenom || '';
@@ -296,9 +321,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // ========== LISTE AVEC TRI ET FILTRES ==========
-    function getStatutLabel(statut) {
-        const labels = {0: 'néant', 1: 'jamais', 2: 'sous condition', 3: 'ok'};
-        return `${statut} - ${labels[statut] || 'inconnu'}`;
+    function getStatutClass(statut) {
+        if (statut === 1) return '_1';
+        if (statut === 2) return '_2';
+        if (statut === 3) return '_3';
+        return ''; // statut 0
     }
     
     async function loadPersonnalitesList() {
@@ -346,10 +373,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             listContainer.innerHTML = Object.keys(grouped).sort().map(letter => `
-                <div style="margin:30px 0;">
-                    <h2 style="background:#ffbbad;padding:10px;border-radius:5px;">${letter}</h2>
-                    ${grouped[letter].map(perso => renderPersonnaliteCard(perso)).join('')}
+                <div class="_3-tile-bloc-padd-20-left">
+                    <h2 class="heading-31">${letter}</h2>
                 </div>
+                ${grouped[letter].map(perso => renderPersonnaliteCard(perso)).join('')}
             `).join('');
             
         } else if (sortBy === 'metier') {
@@ -367,21 +394,45 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             listContainer.innerHTML = Object.keys(grouped).sort().map(metier => `
-                <div style="margin:30px 0;">
-                    <h2 style="background:#ffbbad;padding:10px;border-radius:5px;">${metier}</h2>
-                    ${grouped[metier].map(perso => renderPersonnaliteCard(perso)).join('')}
+                <div class="_3-tile-bloc-padd-20-left">
+                    <h2 class="heading-31">${metier}</h2>
                 </div>
+                ${grouped[metier].map(perso => renderPersonnaliteCard(perso)).join('')}
             `).join('');
         }
     }
     
     function renderPersonnaliteCard(perso) {
+        const statutClass = getStatutClass(perso.statut);
+        const metier = perso.metiers && perso.metiers.length > 0 ? perso.metiers[0] : '';
+        
         return `
-            <div style="padding:15px;margin:10px 0;border:1px solid #ddd;border-radius:5px;background:#fff;">
-                <h3 style="margin:0 0 5px 0;">${perso.prenom} ${perso.nom} <span style="font-size:14px;color:#666;">[${getStatutLabel(perso.statut)}]</span></h3>
-                ${perso.metiers && perso.metiers.length > 0 ? '<p style="margin:5px 0;"><strong>Métiers:</strong> ' + perso.metiers.join(', ') + '</p>' : ''}
-                ${perso.bio_courte ? '<p style="margin:5px 0;">' + perso.bio_courte + '</p>' : ''}
-                ${perso.expertise ? '<p style="margin:5px 0;"><strong>Expertise:</strong> ' + perso.expertise.substring(0, 150) + (perso.expertise.length > 150 ? '...' : '') + '</p>' : ''}
+            <div class="_3-grid-perso">
+                <div class="nom-prenom-metier">
+                    <a href="#" class="w-inline-block">
+                        <div class="nom-pr-nom">
+                            <h4 class="heading-4-nom-prenom">${perso.nom}</h4>
+                            <h4 class="heading-4-nom-prenom">${perso.prenom}</h4>
+                        </div>
+                    </a>
+                    ${metier ? `<div class="bloc-metier"><h4 class="heading-4-nom-prenom grey">${metier}</h4></div>` : ''}
+                    <div class="fontello-statut ${statutClass}"></div>
+                </div>
+                <div class="boutons-perso-group">
+                    <div class="like-bloc">
+                        <div class="_2-picto-fontello-bouton black-stroke"></div>
+                        <div class="_w-courant _w-bold _w-pink"><sup>0</sup></div>
+                    </div>
+                    <a href="#" class="_2-mini-bouton mini w-inline-block">
+                        <div class="_2-picto-fontello-bouton"></div>
+                        <h6 class="heading-dyn mini">épingler</h6>
+                    </a>
+                    <a href="#" class="_2-mini-bouton mini w-inline-block">
+                        <div class="_2-picto-fontello-bouton"></div>
+                        <h6 class="heading-dyn mini">Brouillon</h6>
+                    </a>
+                </div>
+                ${perso.bio_courte ? `<p class="short-bio">${perso.bio_courte}</p>` : ''}
             </div>
         `;
     }
