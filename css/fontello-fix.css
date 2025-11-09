@@ -1,23 +1,19 @@
-/* ==================== FONTS FONTELLO ==================== */
+/* ==================== FONT FACE ==================== */
 @font-face {
-  font-family: Fontello;
-  src: url("../fonts/fontello.woff2") format("woff2"), 
-       url("../fonts/fontello.woff") format("woff"),
-       url("../fonts/fontello.ttf") format("truetype");
-  font-weight: 400;
+  font-family: 'Fontello';
+  src: url('../fonts/fontello.woff2') format('woff2'),
+       url('../fonts/fontello.woff') format('woff'),
+       url('../fonts/fontello.ttf') format('truetype');
+  font-weight: normal;
   font-style: normal;
-  font-display: swap;
 }
 
-/* ==================== BASE FONTELLO ==================== */
-[class^="icon-"]:before, [class*=" icon-"]:before,
-.fontello-picot-compte::before,
-.croix::before,
-._2-picto-fontello-bouton::before {
-  font-family: Fontello, Arial, sans-serif;
+/* ==================== BASE CLASSES ==================== */
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "Fontello";
   font-style: normal;
   font-weight: normal;
-  speak: none;
+  speak: never;
   display: inline-block;
   text-decoration: inherit;
   width: 1em;
@@ -30,10 +26,54 @@
 }
 
 /* ==================== ICONES PRINCIPALES ==================== */
-.fontello-picot-compte::before { content: "\e818"; }
-.croix::before { content: "\e805"; }
+.fontello-picot-compte:before { content: '\e818'; } /* user */
+.croix:before { content: '\e805'; } /* cancel */
+._2-picto-fontello-bouton:before { content: '\e823'; } /* plus */
 
-/* ==================== TOUS LES PICTOS FONTELLO ==================== */
+/* Loupe pour recherche */
+._2-mini-bouton.loupe ._2-picto-fontello-bouton:before { content: '\e801'; } /* search */
+
+/* Liste personnalités */
+._2-mini-bouton.people ._2-picto-fontello-bouton:before { content: '\e818'; } /* user/people */
+
+/* ==================== STATUTS ==================== */
+.fontello-statut {
+  color: var(--sos-white);
+  margin-left: 5px;
+  font-family: Fontello, Arial, sans-serif;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.fontello-statut:before {
+  content: '\e80d'; /* record - cercle plein pour statut 0 */
+}
+
+.fontello-statut._1 {
+  color: var(--new-grey);
+}
+
+.fontello-statut._1:before {
+  content: '\e805'; /* cancel - croix pour jamais */
+}
+
+.fontello-statut._2 {
+  color: var(--sos-yellow);
+}
+
+.fontello-statut._2:before {
+  content: '\e844'; /* dot-3 - trois points pour sous condition */
+}
+
+.fontello-statut._3 {
+  color: var(--sos-green);
+}
+
+.fontello-statut._3:before {
+  content: '\e81b'; /* ok - check pour ok */
+}
+
+/* ==================== TOUS LES CODES FONTELLO ==================== */
 .icon-paper-plane:before { content: '\e800'; }
 .icon-search:before { content: '\e801'; }
 .icon-heart:before { content: '\e802'; }
@@ -220,88 +260,3 @@
 .icon-folder-open-empty:before { content: '\f115'; }
 .icon-newspaper-1:before { content: '\f1ea'; }
 .icon-search-2:before { content: '\f50d'; }
-
-/* ==================== BOUTONS MENU - CONTOUR BLANC AU ROLLOVER ==================== */
-._2-menu-bouton {
-  transition: all 0.3s ease;
-}
-
-._2-menu-bouton:hover {
-  border-color: #fff !important;
-  background-color: transparent !important;
-}
-
-._2-menu-bouton:hover h1 {
-  color: #fff !important;
-}
-
-._2-menu-bouton.w--current {
-  background-color: #ffbbad !important;
-  border-color: #ffbbad !important;
-}
-
-._2-menu-bouton.w--current h1 {
-  color: #fff !important;
-}
-
-/* ==================== ZONE ADMIN ==================== */
-.admine-part {
-  background-color: #ffbb47;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.admine-part .link-admin {
-  color: #000;
-  padding: 5px 10px;
-  text-decoration: underline;
-}
-
-/* ==================== DROPDOWN RECHERCHE ==================== */
-.search-dropdown {
-  position: absolute;
-  background: white;
-  border: 1px solid #ddd;
-  max-height: 300px;
-  overflow-y: auto;
-  width: 100%;
-  z-index: 1000;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  margin-top: 5px;
-  border-radius: 4px;
-}
-
-.search-result-item {
-  padding: 12px 15px;
-  cursor: pointer;
-  border-bottom: 1px solid #eee;
-  transition: background-color 0.2s;
-}
-
-.search-result-item:hover {
-  background-color: #f5f5f5;
-}
-
-.search-result-item:last-child {
-  border-bottom: none;
-}
-
-.search-result-item strong {
-  display: block;
-  margin-bottom: 4px;
-  color: #333;
-}
-
-.search-result-item small {
-  color: #666;
-  font-size: 12px;
-}
-
-/* ==================== RESPONSIVE ==================== */
-@media (max-width: 768px) {
-  ._2-menu-bouton h1 {
-    font-size: 16px;
-  }
-}
