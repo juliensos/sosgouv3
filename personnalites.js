@@ -198,6 +198,63 @@ document.addEventListener('DOMContentLoaded', function() {
         updateArticlesList();
     }
     
+    // ========== BOUTONS LOUPE ET PEOPLE (liste complète) ==========
+    const loupeBtn = document.querySelector('[data-w-id="577ba5b4-1e99-3de5-9565-2497057080cb"]');
+    const peopleBtn = document.querySelector('[data-w-id="577ba5b4-1e99-3de5-9565-2497057080ce"]');
+    
+    async function showPersonnalitesDropdown() {
+        try {
+            const { data, error } = await supabase
+                .from('personnalites')
+                .select('*')
+                .order('nom', { ascending: true })
+                .limit(50);
+            
+            if (error) {
+                console.error('Erreur chargement liste:', error);
+                alert('Erreur lors du chargement de la liste');
+                return;
+            }
+            
+            if (data && data.length > 0) {
+                searchDropdown.innerHTML = data.map(perso => `
+                    <div class="search-result-item" data-perso-id="${perso.id}">
+                        <strong>${perso.prenom} ${perso.nom}</strong>
+                        ${perso.metiers && perso.metiers.length > 0 ? '<br><small>' + perso.metiers.join(', ') + '</small>' : ''}
+                    </div>
+                `).join('');
+                searchDropdown.style.display = 'block';
+                
+                document.querySelectorAll('.search-result-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        loadPersonnalite(this.dataset.persoId);
+                        searchDropdown.style.display = 'none';
+                        searchInput.value = '';
+                    });
+                });
+            } else {
+                searchDropdown.innerHTML = '<div class="search-result-item">Aucune personnalité dans la base</div>';
+                searchDropdown.style.display = 'block';
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    
+    if (loupeBtn) {
+        loupeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showPersonnalitesDropdown();
+        });
+    }
+    
+    if (peopleBtn) {
+        peopleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showPersonnalitesDropdown();
+        });
+    }
+    
     // ========== RECHERCHE ==========
     const searchInput = document.getElementById('search-perso-input');
     const searchDropdown = document.getElementById('search-results-dropdown');
@@ -262,7 +319,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     async function loadPersonnalite(id) {
-        console.log('🔍 Chargement personnalité ID:', id);
         try {
             const { data, error } = await supabase
                 .from('personnalites')
@@ -270,12 +326,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 .eq('id', id)
                 .single();
             
-            if (error) {
-                console.error('❌ Erreur chargement:', error);
-                return;
-            }
+            if (error) return;
             
-            console.log('✅ Personnalité chargée:', data);
             currentEditingId = id; // Mode édition
             
             document.getElementById('admin-nom').value = data.nom || '';
@@ -293,15 +345,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Afficher le bouton supprimer
             const deleteBtn = document.getElementById('delete-perso-btn');
-            console.log('🗑️ Bouton supprimer trouvé:', deleteBtn);
-            if (deleteBtn) {
-                deleteBtn.style.display = 'inline-block';
-                console.log('✅ Bouton supprimer affiché');
-            } else {
-                console.error('❌ Bouton supprimer introuvable');
-            }
+            if (deleteBtn) deleteBtn.style.display = 'inline-block';
         } catch (err) {
-            console.error('❌ Erreur:', err);
+            console.error(err);
         }
     }
     
