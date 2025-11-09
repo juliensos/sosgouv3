@@ -30,6 +30,11 @@
 .croix:before { content: '\e805'; } /* cancel */
 ._2-picto-fontello-bouton:before { content: '\e823'; } /* plus */
 
+/* Icônes spécifiques pour les boutons */
+._2-picto-fontello-bouton.icon-heart:before { content: '\e802'; } /* coeur */
+._2-picto-fontello-bouton.icon-pin:before { content: '\e80a'; } /* épingle */
+._2-picto-fontello-bouton.icon-edit:before { content: '\e845'; } /* crayon/edit */
+
 /* Loupe pour recherche */
 ._2-mini-bouton.loupe ._2-picto-fontello-bouton:before { content: '\e801'; } /* search */
 
