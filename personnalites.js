@@ -220,7 +220,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 searchDropdown.innerHTML = data.map(perso => `
                     <div class="search-result-item" data-perso-id="${perso.id}">
                         <strong>${perso.prenom} ${perso.nom}</strong>
-                        ${perso.metiers && perso.metiers.length > 0 ? '<br><small>' + perso.metiers.join(', ') + '</small>' : ''}
                     </div>
                 `).join('');
                 searchDropdown.style.display = 'block';
