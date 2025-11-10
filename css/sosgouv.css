@@ -2283,8 +2283,10 @@ p {
 
 a {
   color: var(--sos-yellow);
+  font-family: Pinokiosanstrial, Arial, sans-serif;
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 500;
+  line-height: 16px;
   text-decoration: none;
   display: flex;
   overflow: visible;
@@ -4199,6 +4201,7 @@ blockquote {
 ._w-courant {
   color: var(--black-100);
   text-transform: none;
+  font-family: Pinokiosanstrial, Arial, sans-serif;
   font-size: 12px;
   font-weight: 400;
   line-height: 14px;
@@ -4373,6 +4376,11 @@ blockquote {
   color: var(--sos-yellow);
   font-size: 8px;
   line-height: 10px;
+}
+
+._w-courant.cap {
+  text-transform: uppercase;
+  font-weight: 400;
 }
 
 ._w-courant-div {
@@ -8178,6 +8186,10 @@ blockquote {
   font-size: 10px;
 }
 
+._2-picto-fontello-bouton:focus {
+  color: var(--black-100);
+}
+
 ._2-picto-fontello-bouton.green {
   color: var(--sos-green);
 }
@@ -9183,7 +9195,7 @@ blockquote {
   flex: 1;
   width: 100%;
   padding: 20px;
-  display: block;
+  display: none;
   overflow: auto;
 }
 
@@ -9212,7 +9224,7 @@ blockquote {
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
-  display: none;
+  display: block;
   overflow: auto;
 }
 
@@ -9263,7 +9275,7 @@ blockquote {
   display: flex;
 }
 
-.govline {
+.filet {
   border-bottom: 1px solid #000;
   flex: 1;
   justify-content: space-between;
@@ -9273,17 +9285,22 @@ blockquote {
   position: relative;
 }
 
-.govline.govlinedetails {
+.filet.govlinedetails {
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   align-items: center;
   padding-right: 0;
 }
 
+.filet._2v {
+  margin-bottom: 20px;
+}
+
 .heading-4-nom-prenom {
   color: var(--sos-yellow);
   text-transform: uppercase;
   white-space: nowrap;
+  padding-right: 5px;
   font-weight: 900;
 }
 
@@ -9631,6 +9648,7 @@ blockquote {
 ._3-title-bloc-padd-10-left {
   text-align: left;
   padding-bottom: 10px;
+  display: flex;
 }
 
 ._3-small-modal-stroke {
@@ -9836,19 +9854,19 @@ blockquote {
   color: var(--new-grey);
 }
 
-.flex---gap-10-copy {
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+.flex---gap-0 {
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
   align-items: center;
   display: flex;
 }
 
-.flex---gap-10-copy.nogap {
+.flex---gap-0.nogap {
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
 
-.flex---gap-10-copy.stroke {
+.flex---gap-0.stroke {
   background-color: var(--new-grey-25);
   padding: 5px;
 }
@@ -10651,6 +10669,7 @@ blockquote {
   background-color: #0000;
   width: 100vw;
   height: 100vh;
+  display: block;
   position: fixed;
   inset: 0%;
 }
@@ -10705,6 +10724,59 @@ blockquote {
 
 .fontello-statut._3 {
   color: var(--sos-green);
+}
+
+.link-22 {
+  font-family: Fontello, Arial, sans-serif;
+}
+
+.grand-modaux {
+  overflow: auto;
+}
+
+.bloc-video {
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-columns: 1fr;
+  margin-top: 10px;
+  display: grid;
+}
+
+.div-block-329 {
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  display: flex;
+}
+
+.flex---gap-5 {
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  align-items: center;
+  margin-bottom: 5px;
+  display: flex;
+}
+
+.flex---gap-5.nogap {
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.bloc-links {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.div-block-330 {
+  display: none;
+}
+
+.paragraph-6 {
+  text-transform: uppercase;
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 32px;
 }
 
 @media screen and (max-width: 991px) {
@@ -12185,9 +12257,15 @@ blockquote {
     z-index: 1000;
   }
 
+  ._3-content-fiche-perso {
+    margin-right: 0;
+  }
+
   ._3-big-modal-stroke {
     padding-left: 10px;
     padding-right: 10px;
+    display: block;
+    overflow: auto;
   }
 
   ._3-menu {
@@ -12224,11 +12302,11 @@ blockquote {
     display: flex;
   }
 
-  .govline {
+  .filet {
     position: relative;
   }
 
-  .govline.govlinedetails {
+  .filet.govlinedetails {
     grid-column-gap: 10px;
     grid-row-gap: 10px;
     flex-flow: wrap;
@@ -12387,11 +12465,11 @@ blockquote {
     align-items: flex-start;
   }
 
-  .flex---gap-10-copy {
-    flex: 1;
+  .flex---gap-0 {
+    flex: 0 auto;
   }
 
-  .flex---gap-10-copy.stroke {
+  .flex---gap-0.stroke {
     justify-content: flex-start;
     align-items: flex-start;
   }
@@ -12493,6 +12571,21 @@ blockquote {
     flex-flow: wrap;
     width: 80%;
     display: flex;
+  }
+
+  .grand-modaux {
+    overflow: auto;
+  }
+
+  .bloc-video {
+    grid-template-columns: 1fr;
+  }
+
+  .flex---gap-5 {
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    flex: 1;
+    margin-bottom: 5px;
   }
 }
 
